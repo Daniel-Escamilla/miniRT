@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:02:57 by descamil          #+#    #+#             */
-/*   Updated: 2024/11/02 22:33:33 by descamil         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:25:23 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,8 @@
 # include "struct.h"
 # include "main.h"
 # include "file.h"
+# include "utils.h"
+# include "math_struct.h"
+# include "objects_struct.h"
 
 #endif
