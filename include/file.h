@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:02:02 by descamil          #+#    #+#             */
-/*   Updated: 2024/11/02 22:39:53 by descamil         ###   ########.fr       */
+/*   Updated: 2025/01/13 10:07:43 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 #include "../minirt.h"
 
 // ft_create_file.c
+int		ft_nothing(char *input, int i);
 void	ft_create_struct(t_image *image, char **argv);
 
 // ft_open_file.c
 int		ft_open_file(char **argv);
 
 // ft_file_exist.c
-int		ft_error(char *error, int status);
+// int		ft_error(char *error, int status);
 int		ft_file_exist(char **argv, int argc);
+int		ft_error(char *file, char *error, int status);
 
 #endif

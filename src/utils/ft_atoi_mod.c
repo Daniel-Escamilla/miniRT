@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoi_mod.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/19 16:00:38 by descamil          #+#    #+#             */
-/*   Updated: 2024/12/19 11:26:44 by descamil         ###   ########.fr       */
+/*   Created: 2024/12/19 11:34:57 by descamil          #+#    #+#             */
+/*   Updated: 2025/01/13 12:02:53 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../include/utils.h"
 
-static int	handle_sign(const char *str, int *i, int *sign)
+static int	handle_sign(char *str, int *i, int *sign)
 {
 	if (str[*i] == '-')
 	{
@@ -26,7 +26,7 @@ static int	handle_sign(const char *str, int *i, int *sign)
 	return (1);
 }
 
-static int	calculate_result(const char *str, int *i, int sign)
+static int	calculate_result(char *str, int *i, int *error, int sign)
 {
 	long long	result;
 	int			digit;
@@ -37,17 +37,23 @@ static int	calculate_result(const char *str, int *i, int sign)
 		digit = str[*i] - '0';
 		if (sign == 1 && (result > (INT_MAX / 10)
 				|| (result == (INT_MAX / 10) && digit > 7)))
+		{
+			*error = 2;
 			return (INT_MAX);
+		}
 		else if (sign == -1 && (result > (INT_MAX / 10)
-			|| (result == (INT_MAX / 10) && digit > 8)))
+				|| (result == (INT_MAX / 10) && digit > 8)))
+		{
+			*error = 2;
 			return (INT_MIN);
+		}
 		result = result * 10 + digit;
 		(*i)++;
 	}
 	return ((int)result);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi_mod(char *str, int *error)
 {
 	int			result;
 	int			sign;
@@ -55,15 +61,15 @@ int	ft_atoi(const char *str)
 
 	i = 0;
 	sign = 1;
+	*error = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (handle_sign(str, &i, &sign) && (str[i] == '-' || str[i] == '+'
 			|| !(str[i] >= '0' && str[i] <= '9')))
+	{
+		*error = 3;
 		return (0);
-	if ((sign == 0 && ft_strlen(str) > 10) || (sign == 1 && ft_strlen(str) > 11))
-		return (0);
-	result = calculate_result(str, &i, sign);
-	if (str[i] != '\0')
-		return (0);
+	}
+	result = calculate_result(str, &i, error, sign);
 	return (result * sign);
 }

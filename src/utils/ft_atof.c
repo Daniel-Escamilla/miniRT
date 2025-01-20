@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:37:03 by descamil          #+#    #+#             */
-/*   Updated: 2024/11/03 12:40:14 by descamil         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:32:36 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static float	ft_deci(float nb, char *str, int i)
 
 	deci = 0.1;
 	if (str[i] == '-' && ++i > 0)
-		return (3);
+		return (-1);
 	while (ft_isdigit(str[++i]) == 1)
 	{
 		nb = nb + (str[i] - '0') * deci;
@@ -38,8 +38,8 @@ float	ft_atof(char *str)
 	nb = 0;
 	while (str[i] == ' ')
 		i++;
-	if (str[i] == '.')
-		return (0);
+	if (str[i] == '.' || ft_nothing(str, i) == 1)
+		return (-1);
 	if (str[i] == '-' && ++i > 0)
 		m = -1;
 	while (ft_isdigit(str[i]) == 1)

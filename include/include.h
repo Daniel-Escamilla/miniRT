@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:02:57 by descamil          #+#    #+#             */
-/*   Updated: 2024/11/05 11:25:23 by descamil         ###   ########.fr       */
+/*   Updated: 2025/01/20 15:36:31 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include "main.h"
 # include "file.h"
 # include "utils.h"
+# include "colors.h"
+# include "float.h"
 # include "math_struct.h"
 # include "objects_struct.h"
 
