@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 12:50:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/13 12:21:54 by descamil         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:48:42 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,4 @@
 # define B_WH_1 "\033[1;38;5;15m" 	// Blanco claro en negrita
 # define B_WH_2 "\033[1;38;5;145m" 	// Blanco oscuro en negrita
 
-#endif
+#endif  

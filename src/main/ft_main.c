@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/20 15:31:48 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/04 18:19:35 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void print_objects(t_objects *objects)
     if (objects->sphere)
 	{
         printf(B_RD_0 "=== Spheres ===\n" RESET);
-        t_shpere *sphere = objects->sphere;
+        t_sphere *sphere = objects->sphere;
         while (sphere)
 		{
             printf("Sphere Position: ");
