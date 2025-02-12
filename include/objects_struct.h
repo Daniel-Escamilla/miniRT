@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 22:51:11 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/04 18:00:14 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:15:31 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,28 @@ typedef struct s_light
 
 typedef	struct s_sphere
 {
+	struct s_sphere	*next;
 	t_vec3			position;
 	float			diameter;
 	t_vec3			color;
-	struct s_sphere	*next;
 }				t_sphere;
 
 typedef struct s_plane
 {
+	struct s_plane	*next;
 	t_vec3			orientation;
 	t_vec3			position;
 	t_vec3			color;
-	struct s_plane	*next;
 }				t_plane;
 
 typedef struct s_cylinder
 {
+	struct s_cylinder	*next;
 	t_vec3				orientation;
 	t_vec3				position;
 	float				diameter;
 	float				height;
 	t_vec3				color;
-	struct s_cylinder	*next;
 }				t_cylinder;
 
 typedef struct s_objects

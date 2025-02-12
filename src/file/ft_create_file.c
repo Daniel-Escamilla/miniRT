@@ -6,11 +6,26 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/09 12:38:33 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/11 10:15:06 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/file.h"
+
+void	 ft_lstadd_back_general(void **list, void *new)
+{
+	void	*current;
+
+	if (*list == NULL)
+	{
+		*list = new;
+		return ;
+	}
+	current = *list;
+	while (*(void **)current != NULL)
+		current = *(void **)current;
+	*(void **)current = new;
+}
 
 t_vec3	ft_float_to_vec3(float a)
 {
@@ -57,12 +72,14 @@ int	ft_nothing(char *input, int i)
 // 	return (1);
 // }
 
+#include <math.h>
+
 float	ft_check_float(char *split, int *error, float min, float max, int line)
 {
 	float	atof;
 
 	atof = ft_atof(split);
-	if (atof < min || atof > max)
+	if (atof < min || atof > max || (signbit(atof) && atof == -0.0f))
 	{
 		printf("Line: %d, %f not in range [%f - %f]\n", line, atof, min, max);
 		*error += 1;
@@ -72,16 +89,16 @@ float	ft_check_float(char *split, int *error, float min, float max, int line)
 
 float ft_value_normal(char *value, int *error, int line)
 {
-    float	num;
+	float	num;
 
-	 num = ft_atof(value);
-    if (num != 0.000000f && num != 1.000000f)
-    {
-        printf("Line: %d, %f not in range [0 - 1]\n", line, num);
-        *error += 1;
-        return (-1);
-    }
-    return (num);
+	num = ft_atof(value);
+	if (num != 0.000000f && num != 1.000000f)
+	{
+		printf("Line: %d, %f not in range [0 - 1]\n", line, num);
+		*error += 1;
+		return (-1);
+	}
+	return (num);
 }
 
 t_vec3	ft_split_colors(char *color, int *error, int line)
@@ -91,7 +108,11 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 
 	colors = ft_split(color, ',');
 	if (ft_strstr_len(colors) != 3)
+	{
+		(*error)++;
+		printf("Line: %d, Colors not set\n", line);
 		return ((t_vec3){{-1, -1, -1}});
+	}
 	rgb.r = ft_check_float(colors[0], error, 0, 255, line);
 	rgb.g = ft_check_float(colors[1], error, 0, 255, line);
 	rgb.b = ft_check_float(colors[2], error, 0, 255, line);
@@ -101,9 +122,10 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 
 void	ft_error_checking(char ***split, char *error, int status)
 {
+	(void)status;
 	ft_strstr_free(*split);
 	printf("%s\n", error);
-	exit(status);
+	// exit(status);
 }
 
 t_vec3	ft_split_coords(char *coord, int *error, int line)
@@ -113,11 +135,17 @@ t_vec3	ft_split_coords(char *coord, int *error, int line)
 
 	coords = ft_split(coord, ',');
 	if (ft_strstr_len(coords) != 3)
-		return ((t_vec3){{FLT_MAX, FLT_MAX, FLT_MAX}});
+		return ((t_vec3){{-0.0f, -0.0f, -0.0f}});
 	xyz.x = ft_check_float(coords[0], error, -FLT_MAX, FLT_MAX, line);
 	xyz.y = ft_check_float(coords[1], error, -FLT_MAX, FLT_MAX, line);
 	xyz.z = ft_check_float(coords[2], error, -FLT_MAX, FLT_MAX, line);
 	ft_strstr_free(coords);
+	if (xyz.x == -1 || xyz.y == -1 || xyz.z == -1)
+	{
+		printf("Line: %d, Error in coordenates\n", line);
+		(*error)++;
+		return (xyz);
+	}
 	return (xyz);
 }
 
@@ -136,17 +164,6 @@ t_vec3	ft_orientation(char *orientation, int *error, int line)
 	return (orient);
 }
 
-int	ft_only_one(t_vec3 values)
-{
-	if (values.x == 1.0f && values.y == 0.0f && values.z == 0.0f)
-		return (1);
-	if (values.x == 0.0f && values.y == 1.0f && values.z == 0.0f)
-		return (1);
-	if (values.x == 0.0f && values.y == 0.0f && values.z == 1.0f)
-		return (1);
-	return (0);
-}
-
 t_vec3	ft_check_normal(char *normal, int *error, int line)
 {
 	char	**split;
@@ -158,9 +175,7 @@ t_vec3	ft_check_normal(char *normal, int *error, int line)
 	values.x = ft_value_normal(split[0], error, line);
 	values.y = ft_value_normal(split[1], error, line);
 	values.z = ft_value_normal(split[2], error, line);
-	if (ft_only_one(values))
-		return (values);
-	return ((t_vec3){{-1, -1, -1}});
+	return (values);
 }
 
 void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
@@ -206,8 +221,8 @@ void	ft_extact_sphere(t_image *image, char ***split, int *error, int line)
 	new_sphere->position = ft_split_coords((*split)[1], error, line);
 	new_sphere->diameter = ft_check_float((*split)[2], error, 0.0f, FLT_MAX, line);
 	new_sphere->color = ft_split_colors((*split)[3], error, line);
-	new_sphere->next = image->objects->sphere;
-	image->objects->sphere = new_sphere;
+	ft_lstadd_back_general((void **)&image->objects->sphere, new_sphere);
+	image->objects->sphere->next = NULL;
 }
 
 void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
@@ -221,8 +236,7 @@ void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
 	new_plane->position = ft_split_coords((*split)[1], error, line);
 	new_plane->orientation = ft_check_normal((*split)[2], error, line);
 	new_plane->color = ft_split_colors((*split)[3], error, line);
-	new_plane->next = image->objects->plane;
-	image->objects->plane = new_plane;
+	ft_lstadd_back_general((void **)&image->objects->plane, new_plane);
 }
 
 void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
@@ -236,10 +250,9 @@ void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
 	new_cylinder->position = ft_split_coords((*split)[1], error, line);
 	new_cylinder->orientation = ft_check_normal((*split)[2], error, line);
 	new_cylinder->diameter = ft_check_float((*split)[3], error, 0.0f, FLT_MAX, line);
-	new_cylinder->color = ft_split_colors((*split)[4], error, line);
-	new_cylinder->height = ft_check_float((*split)[5], error, 0.0f, FLT_MAX, line);
-	new_cylinder->next = image->objects->cylinder;
-	image->objects->cylinder = new_cylinder;
+	new_cylinder->height = ft_check_float((*split)[4], error, 0.0f, FLT_MAX, line);
+	new_cylinder->color = ft_split_colors((*split)[5], error, line);
+	ft_lstadd_back_general((void **)&image->objects->cylinder, new_cylinder);
 }
 
 void	ft_process_line(t_image *image, char *content, int *error, int line)
@@ -251,7 +264,6 @@ void	ft_process_line(t_image *image, char *content, int *error, int line)
 	split = ft_split(content, ' ');
 	if (split == NULL)
 		return ;
-	printf("%s\n", split[0]);
 	if (ft_strnstr("ACLspplcy", split[0], 10) == NULL)
 	{
 		ft_strstr_free(split);
@@ -274,9 +286,9 @@ void	ft_process_line(t_image *image, char *content, int *error, int line)
 
 void	ft_create_struct(t_image *image, char **argv)
 {
-	char	*content;
-	char	*content_clean;
 	t_image	*current_image;
+	char	*content_clean;
+	char	*content;
 	int		error;
 	int		line;
 	int		fd;
@@ -291,13 +303,15 @@ void	ft_create_struct(t_image *image, char **argv)
 	while (content != NULL)
 	{
 		content_clean = ft_strtrim(content, "\n");
-		// printf(B_BL_0"LINE --> [%s]\n"RESET, content_clean);
 		ft_process_line(current_image, content_clean, &error, line);
 		free(content);
 		free(content_clean);
 		content = get_next_line(fd);
 		line++;
 	}
-	
-	// ft_fill_in(image);
+	if (error != 0)
+	{
+		printf("Errors found: %d\n", error);
+		exit(1);
+	}
 }

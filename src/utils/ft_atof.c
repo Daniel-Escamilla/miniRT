@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:37:03 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/04 16:40:02 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/10 19:12:54 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,30 @@ double	convert_decimal_part(char *str, int *i, int *error)
 	return (nb);
 }
 
+int	ft_all_numbers(char *str)
+{
+	int	point;
+	int	i;
+
+	i = 0;
+	point = 0;
+	while (str && str[i] == ' ')
+		i++;
+	if (str && str[i] == '-')
+		i++;
+	while (str && (ft_isdigit(str[i]) || (str[i] == '.' && point != 1)))
+	{
+		if (str[i] == '.')
+			point = 1;
+		i++;
+	}
+	while (str && str[i] == ' ')
+		i++;
+	if (str[i] == '\0')
+		return (0);
+	return (1);
+}
+
 double	ft_atof(char *str)
 {
 	int		error;
@@ -86,15 +110,14 @@ double	ft_atof(char *str)
 	i = 0;
 	sign = 1;
 	error = 0;
+	if (ft_all_numbers(str) == 1)
+		return (-0.0);
 	while (str[i] == ' ')
 		i++;
 	if (str[i] == '\0')
 		return (-0.0f);
 	sign = handle_sign(str, &i, &error);
-	if (error == -1)
-		return (-0.0f);
 	nb = convert_integer_part(str, &i, &error);
-	// printf(B_CY_1"N --> %f\n"RESET, nb);
 	if (error == -1)
 		return (-0.0f);
 	if (str[i] == '.')
@@ -103,8 +126,6 @@ double	ft_atof(char *str)
 		return (-0.0f);
 	if (nb == 0.0f)
 		sign = 1;
-	// printf(B_OR_1"N --> %f\n"RESET, nb);
-	// printf(B_OR_1"S --> %f\n"RESET, sign * nb);
 	return ((double)sign * (double)nb);
 }
 

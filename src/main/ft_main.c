@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/04 18:19:35 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/10 18:11:23 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,95 +49,95 @@ void print_vec3(t_vec3 vec)
 
 void print_objects(t_objects *objects)
 {
-    if (!objects)
+	if (!objects)
 	{
-        printf(RD_1 "No objects to print.\n" RESET);
-        return;
-    }
-    if (objects->ambient)
+		printf(RD_1 "No objects to print.\n" RESET);
+		return;
+	}
+	if (objects->ambient)
 	{
-        printf(B_YE_1 "=== Ambient ===\n" RESET);
-        printf("Ambient Light: %.2f\n", objects->ambient->ambient_light);
-        printf("Ambient Color: ");
-        print_vec3(objects->ambient->color);
-        printf("\n");
-    }
-    if (objects->camera)
+		printf(B_YE_1 "=== Ambient ===\n" RESET);
+		printf("Ambient Light: %.2f\n", objects->ambient->ambient_light);
+		printf("Ambient Color: ");
+		print_vec3(objects->ambient->color);
+		printf("\n");
+	}
+	if (objects->camera)
 	{
-        printf(B_BL_0 "=== Camera ===\n" RESET);
-        printf("Camera Position: ");
-        print_vec3(objects->camera->position);
-        printf("\n");
-        printf("Camera Orientation: ");
-        print_vec3(objects->camera->orientation);
-        printf("\n");
-        printf("Camera FOV: %d\n", objects->camera->fov);
-    }
-    if (objects->light)
+		printf(B_BL_0 "=== Camera ===\n" RESET);
+		printf("Camera Position: ");
+		print_vec3(objects->camera->position);
+		printf("\n");
+		printf("Camera Orientation: ");
+		print_vec3(objects->camera->orientation);
+		printf("\n");
+		printf("Camera FOV: %d\n", objects->camera->fov);
+	}
+	if (objects->light)
 	{
-        printf(B_CY_0 "=== Light ===\n" RESET);
-        printf("Light Brightness: %.2f\n", objects->light->brightness);
-        printf("Light Position: ");
-        print_vec3(objects->light->position);
-        printf("\n");
-        printf("Light Color: ");
-        print_vec3(objects->light->color);
-        printf("\n");
-    }
-    if (objects->sphere)
+		printf(B_CY_0 "=== Light ===\n" RESET);
+		printf("Light Brightness: %.2f\n", objects->light->brightness);
+		printf("Light Position: ");
+		print_vec3(objects->light->position);
+		printf("\n");
+		printf("Light Color: ");
+		print_vec3(objects->light->color);
+		printf("\n");
+	}
+	if (objects->sphere)
 	{
-        printf(B_RD_0 "=== Spheres ===\n" RESET);
-        t_sphere *sphere = objects->sphere;
-        while (sphere)
+		t_sphere *sphere = objects->sphere;
+		while (sphere)
 		{
-            printf("Sphere Position: ");
-            print_vec3(sphere->position);
-            printf("\n");
-            printf("Sphere Diameter: %.2f\n", sphere->diameter);
-            printf("Sphere Color: ");
-            print_vec3(sphere->color);
-            printf("\n");
-            sphere = sphere->next;
-        }
-    }
-    if (objects->plane)
+			printf(B_RD_0 "=== Spheres ===\n" RESET);
+			printf("Sphere Position: ");
+			print_vec3(sphere->position);
+			printf("\n");
+			printf("Sphere Diameter: %.2f\n", sphere->diameter);
+			printf("Sphere Color: ");
+			print_vec3(sphere->color);
+			printf("\n");
+			sphere = sphere->next;
+		}
+	}
+	if (objects->plane)
 	{
-        printf(B_GR_1 "=== Planes ===\n" RESET);
-        t_plane *plane = objects->plane;
-        while (plane)
+		t_plane *plane = objects->plane;
+		while (plane)
 		{
-            printf("Plane Position: ");
-            print_vec3(plane->position);
-            printf("\n");
-            printf("Plane Orientation: ");
-            print_vec3(plane->orientation);
-            printf("\n");
-            printf("Plane Color: ");
-            print_vec3(plane->color);
-            printf("\n");
-            plane = plane->next;
-        }
-    }
-    if (objects->cylinder)
+			printf(B_GR_1 "=== Planes ===\n" RESET);
+			printf("Plane Position: ");
+			print_vec3(plane->position);
+			printf("\n");
+			printf("Plane Orientation: ");
+			print_vec3(plane->orientation);
+			printf("\n");
+			printf("Plane Color: ");
+			print_vec3(plane->color);
+			printf("\n");
+			plane = plane->next;
+		}
+	}
+	if (objects->cylinder)
 	{
-        printf(B_OR_1 "=== Cylinders ===\n" RESET);
-        t_cylinder *cylinder = objects->cylinder;
-        while (cylinder)
+		t_cylinder *cylinder = objects->cylinder;
+		while (cylinder)
 		{
-            printf("Cylinder Position: ");
-            print_vec3(cylinder->position);
-            printf("\n");
-            printf("Cylinder Orientation: ");
-            print_vec3(cylinder->orientation);
-            printf("\n");
-            printf("Cylinder Diameter: %.2f\n", cylinder->diameter);
-            printf("Cylinder Height: %.2f\n", cylinder->height);
-            printf("Cylinder Color: ");
-            print_vec3(cylinder->color);
-            printf("\n");
-            cylinder = cylinder->next;
-        }
-    }
+			printf(B_OR_1 "=== Cylinders ===\n" RESET);
+			printf("Cylinder Position: ");
+			print_vec3(cylinder->position);
+			printf("\n");
+			printf("Cylinder Orientation: ");
+			print_vec3(cylinder->orientation);
+			printf("\n");
+			printf("Cylinder Diameter: %.2f\n", cylinder->diameter);
+			printf("Cylinder Height: %.2f\n", cylinder->height);
+			printf("Cylinder Color: ");
+			print_vec3(cylinder->color);
+			printf("\n");
+			cylinder = cylinder->next;
+		}
+	}
 }
 
 int main(int argc, char **argv)

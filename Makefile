@@ -3,11 +3,25 @@ NAME = minirt
 
 # Compilador y flags
 CC = gcc
-CFLAGS = -g3 -Wall -Wextra -Werror -lmlx -lX11 -lXext -lXrender
+CFLAGS = -g3 -Wall -Wextra -Werror -Iinclude -lmlx -lX11 -lXext -lXrender
 
-# Directorio de fuentes
+# Directorios de fuentes y objetos
 SRC_DIR = src
+OBJDIR = $(NAME)_objects
 
+# Archivos de encabezado
+INCLUDE_SRC =	file.h \
+				main.h \
+				utils.h \
+				struct.h \
+				colors.h \
+				include.h \
+				math_struct.h \
+				objects_struct.h \
+
+INCLUDES = $(addprefix include/, $(INCLUDE_SRC))
+
+# Archivos fuente organizados por módulos
 MAIN_SRC =      src/main/ft_main.c \
 				src/main/ft_window.c \
 				src/main/ft_initialize.c \
@@ -27,7 +41,7 @@ RENDER_SRC =
 GNL_SRC =		get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
 
-# Archivos fuente
+# Lista final de archivos fuente
 SRCS = 	$(GNL_SRC) \
 		$(MAIN_SRC) \
 		$(FILE_SRC) \
@@ -35,12 +49,11 @@ SRCS = 	$(GNL_SRC) \
  		$(HOOKS_SRC) \
 		$(RENDER_SRC) \
 
-OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
-# Directorio de archivos objeto
-OBJDIR = $(NAME)_objects
+# Archivos objeto
+OBJS = $(patsubst %.c, $(OBJDIR)/%.o, $(SRCS))
+
 # Directorio de la libft
 LIBFT_DIR = ./libft
-# Libreria a utilizar
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # Directorio de MiniLibX
@@ -50,37 +63,36 @@ MLX = $(MLX_DIR)/libmlx.a
 # Flags para MiniLibX
 MLX_FLAGS = -L$(MLX_DIR) -lmlx -L/usr/include/../lib -lXext -lX11 -lm
 
-# Reglas
+# Regla principal
 all: $(OBJDIR) libft mlx $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT) $(MLX_FLAGS)
 
-# Aquí no se requiere usar notdir
-$(OBJDIR)/%.o: %.c | $(OBJDIR)
-	@mkdir -p $(@D)
+# Compilación de objetos con dependencia de headers
+$(OBJDIR)/%.o: %.c $(INCLUDES) | $(OBJDIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+# Creación del directorio de objetos
 $(OBJDIR):
-	@mkdir -p $(OBJDIR)/src/*
+	@mkdir -p $(OBJDIR)
 
 libft:
-	@make -sC $(LIBFT_DIR) --no-print-directory
+	@make -C $(LIBFT_DIR) --no-print-directory
 
 mlx:
-	@make -sC $(MLX_DIR) --no-print-directory
+	@make -C $(MLX_DIR) --no-print-directory
 
 clean:
 	@rm -rf $(OBJDIR)
-	@make -sC $(MLX_DIR) clean
+	@make -C $(MLX_DIR) clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@make -sC $(LIBFT_DIR) fclean
-	@make -sC $(MLX_DIR) clean
+	@make -C $(LIBFT_DIR) fclean
+	@make -C $(MLX_DIR) clean
 
 re: fclean all
 
-run: Z_To-Do_Z/To-Do.py
-	python3 Z_To-Do_Z/To-Do.py
-
-.PHONY: all clean fclean re libft run mlx
+.PHONY: all clean fclean re libft mlx
