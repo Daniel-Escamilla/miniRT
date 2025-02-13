@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/20 15:36:14 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:47:58 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,5 @@
 # define MINIRT_H
 
 # include "include/include.h"
-
 
 #endif

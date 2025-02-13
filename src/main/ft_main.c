@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/10 18:11:23 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/13 19:13:19 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	ft_free_all(t_image *image)
 		if (image->objects->light)
 			free(image->objects->light);
 		if (image->objects->sphere)
-			free(image->objects->sphere);
+			ft_free_list_general((void **)&image->objects->sphere);
 		if (image->objects->plane)
-			free(image->objects->plane);
+			ft_free_list_general((void **)&image->objects->plane);
 		if (image->objects->cylinder)
-			free(image->objects->cylinder);
+			ft_free_list_general((void **)&image->objects->cylinder);
 		free(image->objects);
 	}
 	if (image->data)
@@ -56,7 +56,7 @@ void print_objects(t_objects *objects)
 	}
 	if (objects->ambient)
 	{
-		printf(B_YE_1 "=== Ambient ===\n" RESET);
+		printf(B_YE_1 "\n=== Ambient ===\n\n" RESET);
 		printf("Ambient Light: %.2f\n", objects->ambient->ambient_light);
 		printf("Ambient Color: ");
 		print_vec3(objects->ambient->color);
@@ -64,7 +64,7 @@ void print_objects(t_objects *objects)
 	}
 	if (objects->camera)
 	{
-		printf(B_BL_0 "=== Camera ===\n" RESET);
+		printf(B_BL_0 "\n=== Camera ===\n\n" RESET);
 		printf("Camera Position: ");
 		print_vec3(objects->camera->position);
 		printf("\n");
@@ -75,7 +75,7 @@ void print_objects(t_objects *objects)
 	}
 	if (objects->light)
 	{
-		printf(B_CY_0 "=== Light ===\n" RESET);
+		printf(B_CY_0 "\n=== Light ===\n\n" RESET);
 		printf("Light Brightness: %.2f\n", objects->light->brightness);
 		printf("Light Position: ");
 		print_vec3(objects->light->position);
@@ -89,7 +89,7 @@ void print_objects(t_objects *objects)
 		t_sphere *sphere = objects->sphere;
 		while (sphere)
 		{
-			printf(B_RD_0 "=== Spheres ===\n" RESET);
+			printf(B_RD_0 "\n=== Spheres ===\n\n" RESET);
 			printf("Sphere Position: ");
 			print_vec3(sphere->position);
 			printf("\n");
@@ -105,7 +105,7 @@ void print_objects(t_objects *objects)
 		t_plane *plane = objects->plane;
 		while (plane)
 		{
-			printf(B_GR_1 "=== Planes ===\n" RESET);
+			printf(B_GR_1 "\n=== Planes ===\n\n" RESET);
 			printf("Plane Position: ");
 			print_vec3(plane->position);
 			printf("\n");
@@ -123,7 +123,7 @@ void print_objects(t_objects *objects)
 		t_cylinder *cylinder = objects->cylinder;
 		while (cylinder)
 		{
-			printf(B_OR_1 "=== Cylinders ===\n" RESET);
+			printf(B_OR_1 "\n=== Cylinders ===\n\n" RESET);
 			printf("Cylinder Position: ");
 			print_vec3(cylinder->position);
 			printf("\n");

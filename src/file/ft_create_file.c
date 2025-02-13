@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/11 10:15:06 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:47:44 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ void	 ft_lstadd_back_general(void **list, void *new)
 	*(void **)current = new;
 }
 
+void	ft_free_list_general(void **list)
+{
+	void	*current;
+	void	*next;
+
+	if (!list || !*list)
+		return ;
+	current = *list;
+	while (current != NULL)
+	{
+		next = *(void **)current;
+		free(current);
+		current = next;
+	}
+	list = NULL;
+}
+
+
 t_vec3	ft_float_to_vec3(float a)
 {
 	t_vec3	result;
@@ -46,34 +64,6 @@ int	ft_nothing(char *input, int i)
 	return (0);
 }
 
-// int	ft_check_rgb(t_vec3 color, int line)
-// {
-// 	if (color.r < 0 || color.r > 255)
-// 		printf("Line %d: R value (%f) out of range [0, 255]\n", line, color.r);
-// 	else if (color.g < 0 || color.g > 255)
-// 		printf("Line %d: G value (%f) out of range [0, 255]\n", line, color.g);
-// 	else if (color.b < 0 || color.b > 255)
-// 		printf("Line %d: B value (%f) out of range [0, 255]\n", line, color.b);
-// 	else
-// 		return (0);
-// 	return (1);
-// }
-
-// int	ft_check_coords(t_vec3 xyz, int line)
-// {
-// 	if (xyz.x == -FLT_MAX || xyz.x == FLT_MAX)
-// 		printf("Line %d: X value (%f) out of range\n", line, xyz.x);
-// 	else if (xyz.y == -FLT_MAX || xyz.y == FLT_MAX)
-// 		printf("Line %d: Y value (%f) out of range\n", line, xyz.y);
-// 	else if (xyz.z == -FLT_MAX || xyz.z == FLT_MAX)
-// 		printf("Line %d: Z value (%f) out of range\n", line, xyz.z);
-// 	else
-// 		return (0);
-// 	return (1);
-// }
-
-#include <math.h>
-
 float	ft_check_float(char *split, int *error, float min, float max, int line)
 {
 	float	atof;
@@ -81,7 +71,12 @@ float	ft_check_float(char *split, int *error, float min, float max, int line)
 	atof = ft_atof(split);
 	if (atof < min || atof > max || (signbit(atof) && atof == -0.0f))
 	{
-		printf("Line: %d, %f not in range [%f - %f]\n", line, atof, min, max);
+		if (min == -FLT_MAX && max == FLT_MAX)
+			printf(B_RD_0"Line [%d]\t%f not in range [{-FLT_MAX} - {FLT_MAX}]\n"RESET, line, atof);
+		else if (max == FLT_MAX)
+			printf(B_RD_0"Line [%d]\t%f not in range [{%f} - {FLT_MAX}]\n"RESET, line, atof, min);
+		else
+			printf(B_RD_0"Line [%d]\t%f not in range [%f - %f]\n"RESET, line, atof, min, max);
 		*error += 1;
 	}
 	return (atof);
@@ -92,9 +87,9 @@ float ft_value_normal(char *value, int *error, int line)
 	float	num;
 
 	num = ft_atof(value);
-	if (num != 0.000000f && num != 1.000000f)
+	if (num < 0.000000f && num > 1.000000f)
 	{
-		printf("Line: %d, %f not in range [0 - 1]\n", line, num);
+		printf(B_RD_0"Line: %d, %f not in range [0 - 1]\n"RESET, line, num);
 		*error += 1;
 		return (-1);
 	}
@@ -110,7 +105,7 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 	if (ft_strstr_len(colors) != 3)
 	{
 		(*error)++;
-		printf("Line: %d, Colors not set\n", line);
+		printf(B_RD_0"Line: %d, Colors not set\n"RESET, line);
 		return ((t_vec3){{-1, -1, -1}});
 	}
 	rgb.r = ft_check_float(colors[0], error, 0, 255, line);
@@ -120,13 +115,14 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 	return (rgb);
 }
 
-void	ft_error_checking(char ***split, char *error, int status)
-{
-	(void)status;
-	ft_strstr_free(*split);
-	printf("%s\n", error);
-	// exit(status);
-}
+// void	ft_error_checking(char ***split, char *error, int status)
+// {
+// 	(void)status;
+// 	(void)split;
+// 	// ft_strstr_free(*split);
+	
+// 	// exit(status);
+// }
 
 t_vec3	ft_split_coords(char *coord, int *error, int line)
 {
@@ -135,14 +131,17 @@ t_vec3	ft_split_coords(char *coord, int *error, int line)
 
 	coords = ft_split(coord, ',');
 	if (ft_strstr_len(coords) != 3)
+	{
+		ft_strstr_free(coords);
 		return ((t_vec3){{-0.0f, -0.0f, -0.0f}});
+	}
 	xyz.x = ft_check_float(coords[0], error, -FLT_MAX, FLT_MAX, line);
 	xyz.y = ft_check_float(coords[1], error, -FLT_MAX, FLT_MAX, line);
 	xyz.z = ft_check_float(coords[2], error, -FLT_MAX, FLT_MAX, line);
 	ft_strstr_free(coords);
 	if (xyz.x == -1 || xyz.y == -1 || xyz.z == -1)
 	{
-		printf("Line: %d, Error in coordenates\n", line);
+		printf(B_RD_0"Line: %d, Error in coordenates\n"RESET, line);
 		(*error)++;
 		return (xyz);
 	}
@@ -171,18 +170,25 @@ t_vec3	ft_check_normal(char *normal, int *error, int line)
 
 	split = ft_split(normal, ',');
 	if (ft_strstr_len(split) != 3)
+	{
+		ft_strstr_free(split);
 		return ((t_vec3){{-1, -1, -1}});
+	}
 	values.x = ft_value_normal(split[0], error, line);
 	values.y = ft_value_normal(split[1], error, line);
 	values.z = ft_value_normal(split[2], error, line);
+	ft_strstr_free(split);
 	return (values);
 }
 
 void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 3)
-		ft_error_checking(split, "Ambient light missing\n"
-			"A [ambient lighting ratio (0.0 - 1.0)] [R,G,B (0-255)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'A ratio [R,G,B]'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	image->objects->ambient = ft_calloc(sizeof(t_ambient), 1);
 	image->objects->ambient->ambient_light = ft_check_float((*split)[1], error, 0.0f, 1.0f, line);
 	image->objects->ambient->color = ft_split_colors((*split)[2], error, line);
@@ -191,8 +197,11 @@ void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
 void	ft_extact_camera(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 4)
-		ft_error_checking(split, "Camera missing\nC [x,y,z coordinates]"
-			" [orientation vector (-1 to 1)] [FOV (0-180)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'C [x,y,z] [vector] FOV'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	image->objects->camera = ft_calloc(sizeof(t_camera), 1);
 	image->objects->camera->position = ft_split_coords((*split)[1], error, line);
 	image->objects->camera->orientation = ft_orientation((*split)[2], error, line);
@@ -202,8 +211,11 @@ void	ft_extact_camera(t_image *image, char ***split, int *error, int line)
 void	ft_extact_light(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 4)
-		ft_error_checking(split, "Light missing\nL [x,y,z coordinates]"
-		" [brightness ratio (0.0 - 1.0)] [R,G,B (0-255)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'L [x,y,z] ratio [R,G,B]'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	image->objects->light = ft_calloc(sizeof(t_light), 1);
 	image->objects->light->position = ft_split_coords((*split)[1], error, line);
 	image->objects->light->brightness = ft_check_float((*split)[2], error, 0.0f, 1.0f, line);
@@ -215,8 +227,11 @@ void	ft_extact_sphere(t_image *image, char ***split, int *error, int line)
 	t_sphere	*new_sphere;
 
 	if (ft_strstr_len(*split) != 4)
-		ft_error_checking(split, "Sphere missing\n sp [x,y,z coordinates]"
-			" [diameter] [R,G,B (0-255)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'sp [x,y,z] diam [R,G,B]'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	new_sphere = ft_calloc(sizeof(t_sphere), 1);
 	new_sphere->position = ft_split_coords((*split)[1], error, line);
 	new_sphere->diameter = ft_check_float((*split)[2], error, 0.0f, FLT_MAX, line);
@@ -228,10 +243,13 @@ void	ft_extact_sphere(t_image *image, char ***split, int *error, int line)
 void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
 {
 	t_plane	*new_plane;
-	
+
 	if (ft_strstr_len(*split) != 4)
-		ft_error_checking(split, "Plane missing\npl [x,y,z coordinates]"
-			" [normal vector (-1 to 1)] [R,G,B (0-255)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'pl [x,y,z] [vector] [R,G,B]'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	new_plane = ft_calloc(sizeof(t_plane), 1);
 	new_plane->position = ft_split_coords((*split)[1], error, line);
 	new_plane->orientation = ft_check_normal((*split)[2], error, line);
@@ -244,8 +262,11 @@ void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
 	t_cylinder	*new_cylinder;
 
 	if (ft_strstr_len(*split) != 6)
-		ft_error_checking(split, "Cylinder missing\ncy [x,y,z coordinates]"
-			" [axis vector (-1 to 1)] [diameter] [height] [R,G,B (0-255)]", 1);
+	{
+		printf(B_RD_0 "Línea %d: formato esperado 'cy [x,y,z] [vector] diam altura [R,G,B]'" RESET "\n", line);
+		(*error)++;
+		return;
+	}
 	new_cylinder = ft_calloc(sizeof(t_cylinder), 1);
 	new_cylinder->position = ft_split_coords((*split)[1], error, line);
 	new_cylinder->orientation = ft_check_normal((*split)[2], error, line);
@@ -254,6 +275,8 @@ void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
 	new_cylinder->color = ft_split_colors((*split)[5], error, line);
 	ft_lstadd_back_general((void **)&image->objects->cylinder, new_cylinder);
 }
+
+
 
 void	ft_process_line(t_image *image, char *content, int *error, int line)
 {
@@ -311,7 +334,9 @@ void	ft_create_struct(t_image *image, char **argv)
 	}
 	if (error != 0)
 	{
-		printf("Errors found: %d\n", error);
+		printf(B_WH_0"\n\t    ╭─────────────────────────────╮\n"RESET);
+		printf(B_WH_0"\t    │ "B_BL_0"      Errors found: "B_PR_0"%d       "B_WH_0"│\n"RESET, error);
+		printf(B_WH_0"\t    ╰─────────────────────────────╯\n\n"RESET);
 		exit(1);
 	}
 }

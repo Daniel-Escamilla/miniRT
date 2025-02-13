@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:02:57 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/20 15:36:31 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/13 18:48:15 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 // MINIRT libraries
 # include "struct.h"
 # include "main.h"
+# include "math.h"
 # include "file.h"
 # include "utils.h"
 # include "colors.h"
