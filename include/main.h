@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:02:54 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 21:37:32 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:51:57 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../minirt.h"
 
 // ft_initialize.c
-void	ft_initialize(t_image *image);
+// void	ft_initialize(t_image *image);
 
 // ft_window.c
 int		ft_end_program(t_image *image);

@@ -27,7 +27,7 @@ INCLUDE_SRC =	file.h \
 INCLUDES = $(addprefix include/, $(INCLUDE_SRC))
 
 MAIN_SRC =      src/main/ft_main.c \
-				src/main/ft_window_INU.c \
+				src/main/ft_window.c \
 				src/main/ft_initialize.c \
 
 FILE_SRC =		src/file/ft_open_file.c \

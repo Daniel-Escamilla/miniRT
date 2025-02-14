@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 22:51:11 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 21:20:05 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:52:47 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,13 @@ typedef struct s_cy_formula
 	t_vec3	cy_pos;
 	t_vec3	hit_point;
 	t_vec3	to_cyl;
-	int		*inter;
-	float	intersection;
-	int		shadow;
 	t_vec3	axis;
 	t_vec3	to_hit;
-	t_tt	tt;
 	t_vec3	projection;
-	
+	t_tt	tt;
+	float	intersection;
+	int		*inter;
+	int		shadow;
 }			t_cy_formula;
 
 typedef struct s_cuadratic
