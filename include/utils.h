@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:37:54 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/23 12:53:28 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:37:45 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ double	ft_atof(char *str);
 
 // ft_atoi_mod.c
 int		ft_atoi_mod(char *str, int *error);
+
+// ft_print_struct.c
+void	print_objects(t_objects *objects);
+void	print_vec3(t_vec3 vec);
+
+// ft_free_struct.c
+void	ft_free_all(t_image *image);
+void	ft_free_list_general(void **list);
 
 // ft_strstr_utils.c
 int		ft_strstr_len(char **str);

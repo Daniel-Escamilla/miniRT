@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 22:51:11 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 19:59:55 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:20:05 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,46 @@
 
 # include "../minirt.h"
 # include "math_struct.h"
+
+typedef struct s_tt
+{
+	float	tap1;
+	float	tap2;
+}			t_tt;
+
+typedef struct s_cy_formula
+{
+	t_vec3	ray_origin;
+	t_vec3	ray_dir;
+	t_vec3	cy_pos;
+	t_vec3	hit_point;
+	t_vec3	to_cyl;
+	int		*inter;
+	float	intersection;
+	int		shadow;
+	t_vec3	axis;
+	t_vec3	to_hit;
+	t_tt	tt;
+	t_vec3	projection;
+	
+}			t_cy_formula;
+
+typedef struct s_cuadratic
+{
+	float	a;
+	float	b;
+	float	c;
+	float	tt;
+	float	disc;
+	t_vec3	test;
+}			t_cuadratic;
+
+typedef struct s_color
+{
+	t_vec3		rgb;
+	t_vec3		light_dir;
+	int			plus;
+}				t_color;
 
 typedef struct s_ambient
 {

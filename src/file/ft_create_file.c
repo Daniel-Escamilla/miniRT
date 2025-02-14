@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 19:59:09 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 21:33:23 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,6 @@ void	 ft_lstadd_back_general(void **list, void *new)
 		current = *(void **)current;
 	*(void **)current = new;
 }
-
-void	ft_free_list_general(void **list)
-{
-	void	*current;
-	void	*next;
-
-	if (!list || !*list)
-		return ;
-	current = *list;
-	while (current != NULL)
-	{
-		next = *(void **)current;
-		free(current);
-		current = next;
-	}
-	list = NULL;
-}
-
 
 t_vec3	ft_float_to_vec3(float a)
 {
