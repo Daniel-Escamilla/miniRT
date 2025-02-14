@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/13 19:13:19 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:49:22 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void print_objects(t_objects *objects)
 		print_vec3(objects->camera->position);
 		printf("\n");
 		printf("Camera Orientation: ");
-		print_vec3(objects->camera->orientation);
+		print_vec3(objects->camera->normal);
 		printf("\n");
 		printf("Camera FOV: %d\n", objects->camera->fov);
 	}
@@ -110,7 +110,7 @@ void print_objects(t_objects *objects)
 			print_vec3(plane->position);
 			printf("\n");
 			printf("Plane Orientation: ");
-			print_vec3(plane->orientation);
+			print_vec3(plane->normal);
 			printf("\n");
 			printf("Plane Color: ");
 			print_vec3(plane->color);
@@ -128,7 +128,7 @@ void print_objects(t_objects *objects)
 			print_vec3(cylinder->position);
 			printf("\n");
 			printf("Cylinder Orientation: ");
-			print_vec3(cylinder->orientation);
+			print_vec3(cylinder->normal);
 			printf("\n");
 			printf("Cylinder Diameter: %.2f\n", cylinder->diameter);
 			printf("Cylinder Height: %.2f\n", cylinder->height);

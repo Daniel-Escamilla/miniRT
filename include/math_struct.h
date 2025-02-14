@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/14 11:08:47 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:59:44 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,6 @@ typedef union u_vec3
 	};
 }				t_vec3;
 
-// typedef struct s_matrix_v3
-// {
-// 	t_vec3		x;
-// 	t_vec3		y;
-// 	t_vec3		z;
-// }				t_matrix_v3;
-
 typedef struct s_vec4
 {
 	float		x;
@@ -51,13 +44,5 @@ typedef struct s_vec4
 	float		z;
 	float		w;
 }				t_vec4;
-
-// typedef struct s_matrix_v4
-// {
-// 	t_vec4		x;
-// 	t_vec4		y;
-// 	t_vec4		z;
-// 	t_vec4		w;
-// }				t_matrix_v4;
 
 #endif

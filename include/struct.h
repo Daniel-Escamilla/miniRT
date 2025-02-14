@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:09:02 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/09 12:31:36 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:01:00 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_image
 	void		*mlx_win;
 	int			width;
 	int			height;
+	float		aspect_ratio;
 }				t_image;
 
 #endif

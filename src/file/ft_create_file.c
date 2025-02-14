@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/13 18:47:44 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:59:09 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_vec3	ft_float_to_vec3(float a)
 	return (result);
 }
 
-int	ft_nothing(char *input, int i)
+int	ft_nothing(const char *input, int i)
 {
 	while (input[i] && (input[i] == ' ' || input[i] == '\n'))
 		i++;
@@ -64,12 +64,12 @@ int	ft_nothing(char *input, int i)
 	return (0);
 }
 
-float	ft_check_float(char *split, int *error, float min, float max, int line)
+double	ft_check_float(char *split, int *error, float min, float max, int line)
 {
-	float	atof;
+	double	atof;
 
 	atof = ft_atof(split);
-	if (atof < min || atof > max || (signbit(atof) && atof == -0.0f))
+	if (atof < min || atof > max || (signbit(atof) && atof == -0.0F))
 	{
 		if (min == -FLT_MAX && max == FLT_MAX)
 			printf(B_RD_0"Line [%d]\t%f not in range [{-FLT_MAX} - {FLT_MAX}]\n"RESET, line, atof);
@@ -77,7 +77,7 @@ float	ft_check_float(char *split, int *error, float min, float max, int line)
 			printf(B_RD_0"Line [%d]\t%f not in range [{%f} - {FLT_MAX}]\n"RESET, line, atof, min);
 		else
 			printf(B_RD_0"Line [%d]\t%f not in range [%f - %f]\n"RESET, line, atof, min, max);
-		*error += 1;
+		(*error)++;
 	}
 	return (atof);
 }
@@ -90,7 +90,7 @@ float ft_value_normal(char *value, int *error, int line)
 	if (num < 0.000000f && num > 1.000000f)
 	{
 		printf(B_RD_0"Line: %d, %f not in range [0 - 1]\n"RESET, line, num);
-		*error += 1;
+		(*error)++;
 		return (-1);
 	}
 	return (num);
@@ -115,15 +115,6 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 	return (rgb);
 }
 
-// void	ft_error_checking(char ***split, char *error, int status)
-// {
-// 	(void)status;
-// 	(void)split;
-// 	// ft_strstr_free(*split);
-	
-// 	// exit(status);
-// }
-
 t_vec3	ft_split_coords(char *coord, int *error, int line)
 {
 	t_vec3	xyz;
@@ -133,7 +124,7 @@ t_vec3	ft_split_coords(char *coord, int *error, int line)
 	if (ft_strstr_len(coords) != 3)
 	{
 		ft_strstr_free(coords);
-		return ((t_vec3){{-0.0f, -0.0f, -0.0f}});
+		return ((t_vec3){{-0.0F, -0.0F, -0.0F}});
 	}
 	xyz.x = ft_check_float(coords[0], error, -FLT_MAX, FLT_MAX, line);
 	xyz.y = ft_check_float(coords[1], error, -FLT_MAX, FLT_MAX, line);
@@ -156,9 +147,9 @@ t_vec3	ft_orientation(char *orientation, int *error, int line)
 	split = ft_split(orientation, ',');
 	if (ft_strstr_len(split) != 3)
 		return ((t_vec3){{-1, -1, -1}});
-	orient.x = ft_check_float(split[0], error, 0.0f, 1.0f, line);
-	orient.y = ft_check_float(split[1], error, 0.0f, 1.0f, line);
-	orient.z = ft_check_float(split[2], error, 0.0f, 1.0f, line);
+	orient.x = ft_check_float(split[0], error, 0.0F, 1.0F, line);
+	orient.y = ft_check_float(split[1], error, 0.0F, 1.0F, line);
+	orient.z = ft_check_float(split[2], error, 0.0F, 1.0F, line);
 	ft_strstr_free(split);
 	return (orient);
 }
@@ -190,7 +181,7 @@ void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
 		return;
 	}
 	image->objects->ambient = ft_calloc(sizeof(t_ambient), 1);
-	image->objects->ambient->ambient_light = ft_check_float((*split)[1], error, 0.0f, 1.0f, line);
+	image->objects->ambient->ambient_light = ft_check_float((*split)[1], error, 0.0F, 1.0F, line);
 	image->objects->ambient->color = ft_split_colors((*split)[2], error, line);
 }
 
@@ -204,7 +195,7 @@ void	ft_extact_camera(t_image *image, char ***split, int *error, int line)
 	}
 	image->objects->camera = ft_calloc(sizeof(t_camera), 1);
 	image->objects->camera->position = ft_split_coords((*split)[1], error, line);
-	image->objects->camera->orientation = ft_orientation((*split)[2], error, line);
+	image->objects->camera->normal = ft_orientation((*split)[2], error, line);
 	image->objects->camera->fov = (int)ft_check_float((*split)[3], error, 0, 180, line);
 }
 
@@ -218,7 +209,7 @@ void	ft_extact_light(t_image *image, char ***split, int *error, int line)
 	}
 	image->objects->light = ft_calloc(sizeof(t_light), 1);
 	image->objects->light->position = ft_split_coords((*split)[1], error, line);
-	image->objects->light->brightness = ft_check_float((*split)[2], error, 0.0f, 1.0f, line);
+	image->objects->light->brightness = ft_check_float((*split)[2], error, 0.0F, 1.0F, line);
 	image->objects->light->color = ft_split_colors((*split)[3], error, line);
 }
 
@@ -234,10 +225,10 @@ void	ft_extact_sphere(t_image *image, char ***split, int *error, int line)
 	}
 	new_sphere = ft_calloc(sizeof(t_sphere), 1);
 	new_sphere->position = ft_split_coords((*split)[1], error, line);
-	new_sphere->diameter = ft_check_float((*split)[2], error, 0.0f, FLT_MAX, line);
+	new_sphere->diameter = ft_check_float((*split)[2], error, 0.0F, FLT_MAX, line);
 	new_sphere->color = ft_split_colors((*split)[3], error, line);
+	new_sphere->radius = new_sphere->diameter / 2; 
 	ft_lstadd_back_general((void **)&image->objects->sphere, new_sphere);
-	image->objects->sphere->next = NULL;
 }
 
 void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
@@ -252,7 +243,7 @@ void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
 	}
 	new_plane = ft_calloc(sizeof(t_plane), 1);
 	new_plane->position = ft_split_coords((*split)[1], error, line);
-	new_plane->orientation = ft_check_normal((*split)[2], error, line);
+	new_plane->normal = ft_check_normal((*split)[2], error, line);
 	new_plane->color = ft_split_colors((*split)[3], error, line);
 	ft_lstadd_back_general((void **)&image->objects->plane, new_plane);
 }
@@ -269,14 +260,13 @@ void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
 	}
 	new_cylinder = ft_calloc(sizeof(t_cylinder), 1);
 	new_cylinder->position = ft_split_coords((*split)[1], error, line);
-	new_cylinder->orientation = ft_check_normal((*split)[2], error, line);
-	new_cylinder->diameter = ft_check_float((*split)[3], error, 0.0f, FLT_MAX, line);
-	new_cylinder->height = ft_check_float((*split)[4], error, 0.0f, FLT_MAX, line);
+	new_cylinder->normal = ft_check_normal((*split)[2], error, line);
+	new_cylinder->diameter = ft_check_float((*split)[3], error, 0.0F, FLT_MAX, line);
+	new_cylinder->height = ft_check_float((*split)[4], error, 0.0F, FLT_MAX, line);
 	new_cylinder->color = ft_split_colors((*split)[5], error, line);
+	new_cylinder->radius = new_cylinder->diameter / 2; 
 	ft_lstadd_back_general((void **)&image->objects->cylinder, new_cylinder);
 }
-
-
 
 void	ft_process_line(t_image *image, char *content, int *error, int line)
 {
@@ -292,7 +282,7 @@ void	ft_process_line(t_image *image, char *content, int *error, int line)
 		ft_strstr_free(split);
 		return ;
 	}
-	else if (ft_strnstr(split[0], "A", 1) != NULL)
+	if (ft_strnstr(split[0], "A", 1) != NULL)
 		ft_extact_ambient(image, &split, error, line);
 	else if (ft_strnstr(split[0], "C", 1) != NULL && ft_strlen(split[0]) == 1)
 		ft_extact_camera(image, &split, error, line);
@@ -326,11 +316,10 @@ void	ft_create_struct(t_image *image, char **argv)
 	while (content != NULL)
 	{
 		content_clean = ft_strtrim(content, "\n");
-		ft_process_line(current_image, content_clean, &error, line);
+		ft_process_line(current_image, content_clean, &error, line++);
 		free(content);
 		free(content_clean);
 		content = get_next_line(fd);
-		line++;
 	}
 	if (error != 0)
 	{

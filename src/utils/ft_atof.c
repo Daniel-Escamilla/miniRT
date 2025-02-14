@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:37:03 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/10 19:12:54 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 19:01:51 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ double	convert_integer_part(char *str, int *i, int *error)
 	double	nb;
 	int			n;
 
-	nb = 0.0f;
+	nb = 0.0F;
 	start = *i;
 	while (str[*i] >= '0' && str[*i] <= '9')
 	{
@@ -58,8 +58,8 @@ double	convert_decimal_part(char *str, int *i, int *error)
 	double	decimal_div;
 	double	nb;
 
-	nb = 0.0f;
-	decimal_div = 10.0f;
+	nb = 0.0F;
+	decimal_div = 10.0F;
 	if (str[*i] == '.' && ft_isdigit(str[*i - 1]) == 0)
 		*error = -1;
 	if (str[(*i)++] == '.' && *error != -1)
@@ -69,7 +69,7 @@ double	convert_decimal_part(char *str, int *i, int *error)
 			if (ft_isdigit(str[*i]) == 0)
 				*error = -1;
 			nb += (str[*i] - '0') / (decimal_div);
-			decimal_div *= 10.0f;
+			decimal_div *= 10.0F;
 			(*i)++;
 		}
 	}
@@ -95,7 +95,7 @@ int	ft_all_numbers(char *str)
 	}
 	while (str && str[i] == ' ')
 		i++;
-	if (str[i] == '\0')
+	if (str && str[i] == '\0')
 		return (0);
 	return (1);
 }
@@ -108,23 +108,22 @@ double	ft_atof(char *str)
 	int		i;
 
 	i = 0;
-	sign = 1;
 	error = 0;
 	if (ft_all_numbers(str) == 1)
 		return (-0.0);
 	while (str[i] == ' ')
 		i++;
 	if (str[i] == '\0')
-		return (-0.0f);
+		return (-0.0F);
 	sign = handle_sign(str, &i, &error);
 	nb = convert_integer_part(str, &i, &error);
 	if (error == -1)
-		return (-0.0f);
+		return (-0.0F);
 	if (str[i] == '.')
 		nb += convert_decimal_part(str, &i, &error);
 	if (error == -1)
-		return (-0.0f);
-	if (nb == 0.0f)
+		return (-0.0F);
+	if (nb == 0.0F)
 		sign = 1;
 	return ((double)sign * (double)nb);
 }

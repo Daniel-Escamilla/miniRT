@@ -3,7 +3,7 @@ NAME = minirt
 
 # Compilador y flags
 CC = gcc
-CFLAGS = -g3 -Wall -Wextra -Werror -Iinclude -lmlx -lX11 -lXext -lXrender
+CFLAGS = -g3 -Wall -Wextra -Werror -Iinclude -lmlx -lX11 -lXext -lXrender# -Wpedantic -Wshadow -Wformat -Wnull-dereference -Wconversion -Wstrict-overflow -Wsign-conversion -Wimplicit-fallthrough=5 -Wdouble-promotion -Wvla -Wformat-security -Wcast-align=strict -Wredundant-decls -Wlogical-op -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Winit-self -Wuninitialized -Wbad-function-cast -Wmissing-field-initializers
 
 # Directorios de fuentes y objetos
 SRC_DIR = src
@@ -33,10 +33,6 @@ FILE_SRC =		src/file/ft_open_file.c \
 UTILS_SRC =		src/utils/ft_atof.c \
 				src/utils/ft_atoi_mod.c \
 				src/utils/ft_strstr_utils.c \
-
-HOOKS_SRC =		
-
-RENDER_SRC =    
 
 GNL_SRC =		get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
@@ -80,6 +76,17 @@ $(OBJDIR):
 
 libft:
 	@make -C $(LIBFT_DIR) --no-print-directory
+
+# Configuración de las flags de Clang-Tidy
+TIDY_FLAGS = --checks="*,-clang-analyzer-alpha.*,-google-readability-braces-around-statements,-hicpp-braces-around-statements,-readability-braces-around-statements,-modernize-*,-cppcoreguidelines-*,-clang-analyzer-cplusplus.*"
+
+# Regla para analizar un archivo específico
+analyze:
+	@if [ -z "$(FILE)" ]; then \
+		echo "Por favor, especifica el archivo que quieres analizar con FILE=archivo.c"; \
+	else \
+		clang-tidy $(FILE) $(TIDY_FLAGS) -- -Iinclude -Wall -Wextra -Werror; \
+	fi
 
 mlx:
 	@make -C $(MLX_DIR) --no-print-directory

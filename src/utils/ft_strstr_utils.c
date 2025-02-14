@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 17:10:45 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/20 15:48:41 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 20:45:57 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ char	**ft_strstr_join(char **str, char **str1)
 	j = 0;
 	if (str == NULL)
 	{
-		string = ft_calloc(sizeof(char *), (size_t)ft_strstr_len(str1) + 1);
+		string = ft_calloc((size_t)ft_strstr_len(str1) + 1, sizeof(char *));
 		while (i != ft_strstr_len(str1) && str[i] != NULL)
-			string[j++] = ft_strdup(str1[i++]);
+			string[j++] = ft_strdup(str[i++]);
 		return (string);
 	}
 	size = ft_strstr_len(str) + ft_strstr_len(str1);
@@ -96,13 +96,13 @@ char	**ft_strstr_join(char **str, char **str1)
 
 void	ft_strstr_free(char **str)
 {
-	int	i;
+	int	index;
 
-	i = 0;
+	index = 0;
 	if (str)
 	{
-		while (str[i])
-			free(str[i++]);
+		while (str[index])
+			free(str[index++]);
 		free(str);
 	}
 }

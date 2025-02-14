@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:34:57 by descamil          #+#    #+#             */
-/*   Updated: 2025/01/13 12:02:53 by descamil         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:47:20 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	calculate_result(char *str, int *i, int *error, int sign)
 			*error = 2;
 			return (INT_MAX);
 		}
-		else if (sign == -1 && (result > (INT_MAX / 10)
+		if (sign == -1 && (result > (INT_MAX / 10)
 				|| (result == (INT_MAX / 10) && digit > 8)))
 		{
 			*error = 2;
