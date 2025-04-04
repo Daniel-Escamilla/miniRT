@@ -28,17 +28,21 @@ INCLUDES = $(addprefix include/, $(INCLUDE_SRC))
 
 MAIN_SRC =      src/main/ft_main.c \
 				src/main/ft_window.c \
-				src/main/ft_initialize.c \
 
 FILE_SRC =		src/file/ft_open_file.c \
 				src/file/ft_file_exist.c \
 				src/file/ft_create_file.c \
+
 
 UTILS_SRC =		src/utils/ft_atof.c \
 				src/utils/ft_atoi_mod.c \
 				src/utils/ft_free_struct.c \
 				src/utils/ft_print_struct.c \
 				src/utils/ft_strstr_utils.c \
+
+RENDER_SRC =	src/render/ft_render.c \
+				src/render/ft_per_pixel.c \
+				src/render/ft_maths.c \
 
 GNL_SRC =		get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
@@ -47,6 +51,7 @@ SRCS = 	$(GNL_SRC) \
 		$(MAIN_SRC) \
 		$(FILE_SRC) \
 		$(UTILS_SRC) \
+		$(RENDER_SRC) \
 
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
