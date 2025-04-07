@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/05 13:32:39 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:21:51 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,27 @@
 
 # include "../minirt.h"
 
-typedef struct
-{
-	float	x;
-	float	y;
-} 		t_vec2;
-
-typedef union u_vec3
+typedef union	u_vec2
 {
 	struct
 	{
-		float		r;
-		float		g;
-		float		b;
+		float	x;
+		float	y;
+	};
+	struct
+	{
+		float	t0;
+		float	t1;
+	};
+}				t_vec2;
+
+typedef union	u_vec3
+{
+	struct
+	{
+		int		r;
+		int		g;
+		int		b;
 	};
 	struct
 	{
@@ -35,6 +43,13 @@ typedef union u_vec3
 		float		y;
 		float		z;
 	};
+	struct
+	{
+		float		a;
+		float		b;
+		float		c;
+	};
+	
 }					t_vec3;
 
 typedef struct	s_cam3
@@ -48,8 +63,8 @@ typedef struct	s_hit
 {
 	t_vec3		normal;
 	t_vec3		point;
+	t_vec3		color;
 	float		time;
-	int			colour;
 }				t_hit;
 
 typedef struct	s_ray

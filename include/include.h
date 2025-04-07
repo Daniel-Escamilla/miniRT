@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:02:57 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/04 12:34:35 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/07 21:16:08 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <float.h>
+# include <stdbool.h>
 # include <X11/X.h>
 # include <unistd.h>
 # include <stdbool.h>
