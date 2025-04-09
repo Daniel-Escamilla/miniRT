@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:02:02 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 21:35:06 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 11:52:14 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../minirt.h"
 
 // ft_create_file.c
+t_vec3	ft_float_to_vec3(float a);
 int		ft_nothing(const char *input, int i);
 void	ft_create_struct(t_image *image, char **argv);
 

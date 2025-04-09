@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/04 16:30:16 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 12:14:37 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 3)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'A ratio [R,G,B]'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'A ratio [R,G,B]'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
@@ -126,7 +126,7 @@ void	ft_extact_camera(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 4)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'C [x,y,z] [vector] FOV'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'C [x,y,z] [vector] FOV'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
@@ -140,7 +140,7 @@ void	ft_extact_light(t_image *image, char ***split, int *error, int line)
 {
 	if (ft_strstr_len(*split) != 4)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'L [x,y,z] ratio [R,G,B]'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'L [x,y,z] ratio [R,G,B]'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
@@ -156,7 +156,7 @@ void	ft_extact_sphere(t_image *image, char ***split, int *error, int line)
 
 	if (ft_strstr_len(*split) != 4)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'sp [x,y,z] diam [R,G,B]'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'sp [x,y,z] diameter [R,G,B]'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
@@ -174,7 +174,7 @@ void	ft_extact_plane(t_image *image, char ***split, int *error, int line)
 
 	if (ft_strstr_len(*split) != 4)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'pl [x,y,z] [vector] [R,G,B]'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'pl [x,y,z] [vector] [R,G,B]'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
@@ -191,18 +191,35 @@ void	ft_extact_cylinder(t_image *image, char ***split, int *error, int line)
 
 	if (ft_strstr_len(*split) != 6)
 	{
-		printf(B_RD_0 "Line [%d]\tFormato esperado 'cy [x,y,z] [vector] diam altura [R,G,B]'" RESET "\n", line);
+		printf(B_RD_0 "Line [%d]\tExpected format 'cy [x,y,z] [vector] diameter height [R,G,B]'" RESET "\n", line);
 		(*error)++;
 		return;
 	}
 	new_cylinder = ft_calloc(sizeof(t_cylinder), 1);
 	new_cylinder->position = ft_split_coords((*split)[1], error, line);
 	new_cylinder->normal = ft_split_coords((*split)[2], error, line);
-	new_cylinder->diameter = ft_check_float((*split)[3], error, 0.0F, FLT_MAX, line);
+	new_cylinder->diameter = ft_check_float((*split)[3], error, 0.0F, FLT_MAX, line); 
 	new_cylinder->height = ft_check_float((*split)[4], error, 0.0F, FLT_MAX, line);
 	new_cylinder->color = ft_split_colors((*split)[5], error, line);
 	new_cylinder->radius = new_cylinder->diameter / 2; 
 	ft_lstadd_back_general((void **)&image->objects->cylinder, new_cylinder);
+}
+
+int	ft_check_identifier(char *ident)
+{
+	if (ft_strncmp(ident, "A", 2) == 0)
+		return (0);
+	if (ft_strncmp(ident, "C", 2) == 0)
+		return (0);
+	if (ft_strncmp(ident, "L", 2) == 0)
+		return (0);
+	if (ft_strncmp(ident, "sp", 3) == 0)
+		return (0);
+	if (ft_strncmp(ident, "pl", 3) == 0)
+		return (0);
+	if (ft_strncmp(ident, "cy", 3) == 0)
+		return (0);
+	return (1);
 }
 
 void	ft_process_line(t_image *image, char *content, int *error, int line)
@@ -214,8 +231,10 @@ void	ft_process_line(t_image *image, char *content, int *error, int line)
 	split = ft_split(content, ' ');
 	if (split == NULL)
 		return ;
-	if (ft_strnstr("ACLspplcy", split[0], 10) == NULL)
+	if (ft_check_identifier(split[0]))
 	{
+		*error += 1;
+		printf(B_RD_0 "Line [%d]\t%s\tExpected: A, L, C, sp, pl, cy" RESET "\n", line, split[0]);
 		ft_strstr_free(split);
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:33:49 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/05 12:43:37 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:11:11 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 
 // ft_maths.c
 t_vec3	ft_normalice(t_vec3 vec);
-t_vec3	ft_float_to_vec3(float a);
 float	ft_dot(t_vec3 a, t_vec3 b);
 t_vec3	ft_cross(t_vec3 a, t_vec3 b);
-
+t_vec3	ft_scale(t_vec3 value, float scale);
 
 // ft_render.c
 void	ft_create_render(t_mlx *data, t_image *image);

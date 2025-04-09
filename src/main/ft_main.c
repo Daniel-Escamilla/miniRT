@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/04 16:17:31 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:13:56 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_normalice_values(t_image *image)
 	t_objects	*obj;
 
 	obj = image->objects;
-	obj->camera->normal = ft_normalice(obj->camera->normal);
+	// obj->camera->normal = ft_normalice(obj->camera->normal);
 	ft_normalice_planes(obj->plane);
 	ft_normalice_cylinders(obj->cylinder);
 }
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 	ft_create_struct(&image, argv);
 	ft_create_window(image.data, &image);
 	ft_normalice_values(&image);
-	print_objects(image.objects);
+	// print_objects(image.objects);
 	ft_create_render(image.data, &image);
 	mlx_key_hook(image.mlx_win, ft_hooks, &image);
 	mlx_hook(image.mlx_win, 17, 0, ft_end_program, &image);

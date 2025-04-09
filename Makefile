@@ -40,9 +40,10 @@ UTILS_SRC =		src/utils/ft_atof.c \
 				src/utils/ft_print_struct.c \
 				src/utils/ft_strstr_utils.c \
 
-RENDER_SRC =	src/render/ft_render.c \
+RENDER_SRC =	src/render/ft_maths.c \
+				src/render/ft_render.c \
 				src/render/ft_per_pixel.c \
-				src/render/ft_maths.c \
+				src/render/ft_operations.c \
 
 GNL_SRC =		get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \

@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/07 21:21:51 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 11:47:38 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define MATH_STRUCT_H
 
 # include "../minirt.h"
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef union	u_vec2
 {
@@ -33,9 +37,9 @@ typedef union	u_vec3
 {
 	struct
 	{
-		int		r;
-		int		g;
-		int		b;
+		int			r;
+		int			g;
+		int			b;
 	};
 	struct
 	{
@@ -45,9 +49,9 @@ typedef union	u_vec3
 	};
 	struct
 	{
-		float		a;
-		float		b;
-		float		c;
+		float		_a;
+		float		_b;
+		float		_c;
 	};
 	
 }					t_vec3;

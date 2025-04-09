@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:53:45 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/05 12:42:24 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:28:23 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ float	ft_dot(t_vec3 a, t_vec3 b)
 {
 	float result;
 
-	result = a.x * b.x + a.y * b.y + a.z * b.z;
+	result = (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 
 	return (result);
 }
@@ -52,15 +52,5 @@ t_vec3	ft_vec3(float a, float b, float c)
 	result.x = a;
 	result.y = b;
 	result.z = c;
-	return (result);
-}
-
-t_vec3	ft_float_to_vec3(float a)
-{
-	t_vec3	result;
-
-	result.x = a;
-	result.y = a;
-	result.z = a;
 	return (result);
 }
