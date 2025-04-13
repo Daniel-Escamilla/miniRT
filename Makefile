@@ -1,4 +1,4 @@
-NAME = minirt
+NAME = miniRT
 
 CC = gcc
 CFLAGS = -g3 -Wall -Wextra -Werror -Iinclude -lmlx -lX11 -lXext -lXrender# -Wpedantic -Wshadow -Wformat -Wnull-dereference -Wconversion -Wstrict-overflow -Wsign-conversion -Wimplicit-fallthrough=5 -Wdouble-promotion -Wvla -Wformat-security -Wcast-align=strict -Wredundant-decls -Wlogical-op -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Winit-self -Wuninitialized -Wbad-function-cast -Wmissing-field-initializers
