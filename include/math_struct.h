@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/08 11:47:38 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/13 15:10:00 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # define MATH_STRUCT_H
 
 # include "../minirt.h"
-
-# ifndef M_PI
-#  define M_PI 3.14159265358979323846
-# endif
 
 typedef union	u_vec2
 {
@@ -37,15 +33,15 @@ typedef union	u_vec3
 {
 	struct
 	{
-		int			r;
-		int			g;
-		int			b;
+		double		x;
+		double		y;
+		double		z;
 	};
 	struct
 	{
-		float		x;
-		float		y;
-		float		z;
+		int			r;
+		int			g;
+		int			b;
 	};
 	struct
 	{
@@ -75,7 +71,7 @@ typedef struct	s_ray
 {
 	t_vec3		origin;
 	t_vec3		direction;
-	t_hit		hit;
+	t_hit		*hit;
 }				t_ray;
 
 

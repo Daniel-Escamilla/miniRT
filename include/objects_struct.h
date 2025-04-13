@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 22:51:11 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/05 12:14:06 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/10 10:16:04 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_camera
 {
 	t_vec3		normal;
 	t_vec3		position;
-	int			fov;
+	float										fov;
 	t_vec3		horizontal;
 	t_vec3		vertical;
 	t_vec3		l_left_corner;
