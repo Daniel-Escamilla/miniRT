@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/08 16:13:56 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:38:33 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	ft_hooks(int key, t_image *image)
 void	ft_initialize(t_image *image)
 {
 	image->data = ft_calloc(sizeof(t_mlx), 1);
-	image->width = 700;
-	image->height = 700;
+	image->width = 800;
+	image->height = 800;
 	image->objects = ft_calloc(sizeof(t_objects), 1);
 }
 
@@ -54,12 +54,28 @@ void	ft_normalice_cylinders(t_cylinder *cylinder)
 	}
 }
 
+double ft_len_sqr(t_vec3 v)
+{
+    return (v.x * v.x + v.y * v.y + v.z * v.z);
+}
+
+double ft_len(t_vec3 v)
+{
+    return sqrt(ft_len_sqr(v));
+}
+
+t_vec3 ft_normalice_camera(t_vec3 v)
+{
+    return (ft_scale(v, 1 / ft_len(v)));
+}
+
 void	ft_normalice_values(t_image *image)
 {
 	t_objects	*obj;
 
 	obj = image->objects;
-	// obj->camera->normal = ft_normalice(obj->camera->normal);
+	obj->camera->normal = ft_normalice_camera(obj->camera->normal);
+	obj->camera->fov = ((M_PI / 180) * obj->camera->fov);
 	ft_normalice_planes(obj->plane);
 	ft_normalice_cylinders(obj->cylinder);
 }
