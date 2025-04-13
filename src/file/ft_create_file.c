@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/08 12:14:37 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:34:48 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	 ft_lstadd_back_general(void **list, void *new)
 	*(void **)current = new;
 }
 
-t_vec3	ft_float_to_vec3(float a)
+t_vec3	ft_float_to_vec3(double a)
 {
 	t_vec3	result;
 
@@ -46,7 +46,7 @@ int	ft_nothing(const char *input, int i)
 	return (0);
 }
 
-double	ft_check_float(char *split, int *error, float min, float max, int line)
+double	ft_check_float(char *split, int *error, double min, double max, int line)
 {
 	double	atof;
 
@@ -76,9 +76,9 @@ t_vec3	ft_split_colors(char *color, int *error, int line)
 		printf(B_RD_0"Line [%d]\tColors not set\n"RESET, line);
 		return ((t_vec3){{-1, -1, -1}});
 	}
-	rgb.r = ft_check_float(colors[0], error, 0, 255, line);
-	rgb.g = ft_check_float(colors[1], error, 0, 255, line);
-	rgb.b = ft_check_float(colors[2], error, 0, 255, line);
+	rgb.r = (int)ft_check_float(colors[0], error, 0, 255, line);
+	rgb.g = (int)ft_check_float(colors[1], error, 0, 255, line);
+	rgb.b = (int)ft_check_float(colors[2], error, 0, 255, line);
 	ft_strstr_free(colors);
 	return (rgb);
 }
