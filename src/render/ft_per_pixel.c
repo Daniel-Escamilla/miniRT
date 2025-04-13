@@ -6,16 +6,21 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:29:21 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/08 16:26:53 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/13 17:58:43 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/render.h"
 
 
-t_vec3	ft_scale(t_vec3 value, float scale)
+t_vec3	ft_scale(t_vec3 value, double scale)
 {
-	return ((t_vec3){{(scale * value.x), (scale * value.y), (scale * value.z)}});
+	t_vec3	result;
+	
+	result.x = scale * value.x;
+	result.y = scale * value.y;
+	result.z = scale * value.z;
+	return (result);
 }
 
 t_ray *ft_init_ray(t_image *image, t_vec2 coord)
@@ -26,25 +31,21 @@ t_ray *ft_init_ray(t_image *image, t_vec2 coord)
     t_ray		*ray;
 
 	ray = ft_calloc(sizeof(t_ray), 1);
+	ray->hit = ft_calloc(sizeof(t_hit), 1);
 	horizontal_scaled = ft_multiply(camera->horizontal, ft_float_to_vec3(coord.x));
 	vertical_scaled = ft_multiply(camera->vertical, ft_float_to_vec3(coord.y));
     ray->origin = camera->position;
     ray->direction = ft_add(horizontal_scaled, vertical_scaled);
     ray->direction = ft_add(ray->direction, camera->l_left_corner);
     ray->direction = ft_normalice(ft_subtract(ray->direction, ray->origin));
-
-	// printf("Ray Origin: (%f, %f, %f)\n", ray->origin.x, ray->origin.y, ray->origin.z);
-	// printf("Ray Direction: (%f, %f, %f)\n", ray->direction.x, ray->direction.y, ray->direction.z);
-	// exit(1);
-	ray->hit.time = INFINITY;
     return (ray);
 }
 
-t_vec2	ft_cuadratic(float a, float b, float c)
+t_vec2	ft_cuadratic(double a, double b, double c)
 {
 	t_vec2	values;
-	float	disc;
-	float	tmp;
+	double	disc;
+	double	tmp;
 
 	disc = sqrt(pow(b, 2) - 4 * a * c);
 	values.t0 = (-b - disc) / (2 * a);
@@ -58,32 +59,23 @@ t_vec2	ft_cuadratic(float a, float b, float c)
 	return (values);
 }
 
-void	ft_hit_sphere(t_image *image, t_ray *ray, bool *hit)
+void	ft_hit_sphere(t_sphere *sphere, t_ray *ray, bool *hit)
 {
-	t_sphere	*sphere;
 	t_vec3		values;
 	t_vec3		test;
 	t_vec2		tt;
 
-	sphere = image->objects->sphere;
 	test = ft_subtract(ray->origin, sphere->position);
 	values._a = ft_dot(ray->direction, ray->direction);
 	values._b = 2.0f * ft_dot(test, ray->direction);
 	values._c = ft_dot(test, test) - (sphere->radius * sphere->radius);
 	tt = ft_cuadratic(values._a, values._b, values._c);
-	printf("Sphere Position: (%f, %f, %f)\n", sphere->position.x, sphere->position.y, sphere->position.z);
-	printf("Ray Origin: (%f, %f, %f)\n", ray->origin.x, ray->origin.y, ray->origin.z);
-	printf("Ray Direction: (%f, %f, %f)\n", ray->direction.x, ray->direction.y, ray->direction.z);
-	printf("Test Vector: (%f, %f, %f)\n", test.x, test.y, test.z);
-	printf("Values a: %f, b: %f, c: %f\n", values._a, values._b, values._c);
-	exit(1);
-	if (tt.t0 > ray->hit.time && tt.t0 > 0)
+	if (tt.t0 < ray->hit->time && tt.t0 > 0)
 	{
-		printf("Aqui\n");
-		ray->hit.time = tt.t0;
-		ray->hit.point = ft_add(ray->origin, ft_multiply(ray->direction, ft_float_to_vec3(tt.t0)));
-		ray->hit.normal = ft_normalice(ft_subtract(ray->hit.point, sphere->position));
-		ray->hit.color = sphere->color;
+		ray->hit->time = tt.t0;
+		ray->hit->point = ft_add(ray->origin, ft_multiply(ray->direction, ft_float_to_vec3(tt.t0)));
+		ray->hit->normal = ft_normalice(ft_subtract(ray->hit->point, sphere->position));
+		ray->hit->color = sphere->color;
 		*hit = true;
 	}
 }
@@ -93,12 +85,13 @@ int	ft_hit_anything(t_image *image, t_ray *ray)
     bool		hit;
     t_sphere	*current_sphere;
 
+    ray->hit->time = INFINITY;
     hit = false;
-    current_sphere = image->objects->sphere; // Usar un puntero temporal
+    current_sphere = image->objects->sphere;
     while (current_sphere)
     {
-        ft_hit_sphere(image, ray, &hit);
-        current_sphere = current_sphere->next; // Avanzar en la lista
+        ft_hit_sphere(current_sphere, ray, &hit);
+        current_sphere = current_sphere->next;
     }
     return (hit);
 }
@@ -112,7 +105,7 @@ static int	check_rgb(int color)
 	return (color);
 }
 
-t_vec3	ft_scale_color(t_vec3 color, float f)
+t_vec3	ft_scale_color(t_vec3 color, double f)
 {
 	t_vec3	rgb;
 
@@ -126,45 +119,93 @@ t_vec3	ft_adjust_color(t_vec3 color, t_vec3 adjuster)
 {
 	t_vec3	rgb;
 
-	rgb.r = check_rgb((((float)color.r / 255.0f) * ((float)adjuster.r / 255.0f)) * 255.0f);
-    rgb.g = check_rgb((((float)color.g / 255.0f) * ((float)adjuster.g / 255.0f)) * 255.0f);
-    rgb.b = check_rgb((((float)color.b / 255.0f) * ((float)adjuster.b / 255.0f)) * 255.0f);
+	rgb.r = check_rgb(((color.r / 255.0f) * (adjuster.r / 255.0f)) * 255.0f);
+    rgb.g = check_rgb(((color.g / 255.0f) * (adjuster.g / 255.0f)) * 255.0f);
+    rgb.b = check_rgb(((color.b / 255.0f) * (adjuster.b / 255.0f)) * 255.0f);
 	return (rgb);
 }
 
-float	ft_length_squared(t_vec3 vec)
+double	ft_length_squared(t_vec3 vec)
 {
 	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 }
 
-t_vec3	ft_difuse_light(t_light *light, t_hit hit)
+t_vec3		ft_norm(t_vec3 v)
+{
+	return (ft_scale(v, 1 / sqrt(ft_length_squared(v))));
+}
+
+#ifndef M_PI
+# define M_PI 3.14159265358979323846
+#endif
+
+t_vec3	ft_difuse_light(t_light *light, t_hit *hit)
 {
 	t_vec3	light_dir;
 	t_vec3	diffuse;
-	float	intensity;
-	float	gain;
-	float	r2;
+	double	intensity;
+	double	gain;
+	double	r2;
 
-	light_dir = ft_subtract(light->position, hit.point);
+	light_dir = ft_subtract(light->position, hit->point);
 	r2 = ft_length_squared(light_dir);
-	light_dir = ft_normalice(light_dir);
-	gain = ft_dot(light_dir, hit.normal);
+	light_dir = ft_norm(light_dir);
+	gain = ft_dot(light_dir, hit->normal);
 	if (gain <= 0)
-		return ((t_vec3){{0.0f, 0.0f, 0.0f}});
-	intensity = (light->brightness * gain) / (4.0f * M_PI * r2);
-	diffuse = ft_scale_color(hit.color, intensity);
+		intensity = 0.0;
+	else
+		intensity = (light->brightness * gain * 1000) / (4.0f * M_PI * r2);
+	diffuse = ft_scale_color(hit->color, intensity);
 	return (ft_adjust_color(diffuse, light->color));
 }
 
-int	ft_shadow(t_image *image, t_hit	hit)
+int	ft_shadow(t_image *image, t_hit	*hit)
 {
-	t_ray	shadow;
+	t_ray	*shadow;
 	int		touch;
 
-	shadow.origin = ft_add(hit.point, ft_multiply(hit.normal, ft_float_to_vec3(0.001f)));
-	shadow.direction = ft_normalice(ft_subtract(image->objects->light->position, shadow.origin));
-	touch = ft_hit_anything(image, &shadow);
+	shadow = ft_calloc(sizeof(t_ray), 1);
+	shadow->hit = ft_calloc(sizeof(t_hit), 1);
+	shadow->origin = ft_add(hit->point, ft_scale(hit->normal, 0.001f));
+	shadow->direction = ft_norm(ft_subtract(image->objects->light->position, shadow->origin));
+	touch = ft_hit_anything(image, shadow);
+	free(shadow->hit);
+	free(shadow);
 	return (touch);
+}
+
+void	ft_print_color(t_vec3 color)
+{
+	printf("X -> %d\t", color.r);
+	printf("Y -> %d\t", color.g);
+	printf("Z -> %d\n", color.b);
+}
+
+t_vec3	ft_clamp(t_vec3 color)
+{
+	if (color.x < 0.0f)
+		color.x = 0.0f;
+	else if (color.x > 1.0f)
+		color.x = 1.0f;
+	if (color.y < 0.0f)
+		color.y = 0.0f;
+	else if (color.y > 1.0f)
+		color.y = 1.0f;
+	if (color.z < 0.0f)
+		color.z = 0.0f;
+	else if (color.z > 1.0f)
+		color.z = 1.0f;
+	return (color);
+}
+
+t_vec3	ft_light_point(t_light *light, t_hit *hit, t_vec3 color)
+{
+	t_vec3	diffuse_light;
+	t_vec3	result;
+
+	diffuse_light = ft_difuse_light(light, hit);
+	result = ft_add(diffuse_light, color);
+	return (ft_clamp(result));
 }
 
 t_vec3	ft_per_pixel(t_image *image, t_vec2 coord)
@@ -174,16 +215,21 @@ t_vec3	ft_per_pixel(t_image *image, t_vec2 coord)
 	t_vec3	color;
 	t_ray	*ray;
 
+	color = (t_vec3){{0.0f, 0.0f, 0.0f}};
 	ray = ft_init_ray(image, coord);
 	current = image;
 	if (ft_hit_anything(current, ray) == false)
+	{
+		free(ray->hit);
+		free(ray);
 		return ((t_vec3){{0.0f, 0.0f, 0.0f}});
+	}
 	current = image;
 	ambient_color = ft_scale_color(current->objects->ambient->color, current->objects->ambient->ambient_light);
-	color = ft_adjust_color(ray->hit.color, ambient_color);
-	if (ft_shadow(current, ray->hit))
-		color = ft_adjust_color(color, ft_difuse_light(current->objects->light, ray->hit));
-	// if (color.r != 0 && color.g != 0 && color.b != 0)
-	// 	printf("Color --> %d, %d, %d\n", color.r, color.g, color.b);
+	color = ft_adjust_color(ray->hit->color, ambient_color);
+	if (!ft_shadow(current, ray->hit))
+		color = ft_light_point(current->objects->light, ray->hit, color);
+	free(ray->hit);
+	free(ray);
 	return (color);
 }
