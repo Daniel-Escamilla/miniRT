@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:15:02 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/05 12:23:55 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/09 19:31:13 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_vec3	ft_multiply(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
-static float	safe_divide(float a, float b)
+static double	safe_divide(double a, double b)
 {
 	if (b == 0)
 		return 0;
