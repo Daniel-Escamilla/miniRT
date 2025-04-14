@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math_struct.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/13 15:10:00 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:15:10 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define MATH_STRUCT_H
 
 # include "../minirt.h"
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef union	u_vec2
 {
