@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_per_pixel.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:29:21 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/13 17:58:43 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/14 13:03:56 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/render.h"
 
+double	ft_length_squared(t_vec3 vec)
+{
+	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+}
+
+t_vec3		ft_norm(t_vec3 v)
+{
+	return (ft_scale(v, 1 / sqrt(ft_length_squared(v))));
+}
 
 t_vec3	ft_scale(t_vec3 value, double scale)
 {
@@ -80,11 +89,33 @@ void	ft_hit_sphere(t_sphere *sphere, t_ray *ray, bool *hit)
 	}
 }
 
+void	ft_hit_plane(t_plane *plane, t_ray *ray, bool *hit)
+{
+	double	test;
+	double	tt;
+
+	test = ft_dot(ft_norm(ray->direction), plane->normal);
+	if (test >= 0.0)
+		return;
+	tt = ft_dot(ft_subtract(plane->position, ray->origin), plane->normal) / test;
+	if (tt < ray->hit->time && tt > 0.0001)
+	{
+		ray->hit->time = tt;
+		ray->hit->point = ft_add(ray->origin, ft_scale(ray->direction, ray->hit->time));
+		ray->hit->normal = plane->normal;
+		ray->hit->color = plane->color;
+		*hit = true;
+	}
+}
+
+
+
 int	ft_hit_anything(t_image *image, t_ray *ray)
 {
     bool		hit;
     t_sphere	*current_sphere;
-
+	t_plane		*current_plane;
+	
     ray->hit->time = INFINITY;
     hit = false;
     current_sphere = image->objects->sphere;
@@ -93,6 +124,12 @@ int	ft_hit_anything(t_image *image, t_ray *ray)
         ft_hit_sphere(current_sphere, ray, &hit);
         current_sphere = current_sphere->next;
     }
+	current_plane = image->objects->plane;
+	while (current_plane)
+	{
+		ft_hit_plane(current_plane, ray, &hit);
+		current_plane = current_plane->next;
+	}
     return (hit);
 }
 
@@ -123,16 +160,6 @@ t_vec3	ft_adjust_color(t_vec3 color, t_vec3 adjuster)
     rgb.g = check_rgb(((color.g / 255.0f) * (adjuster.g / 255.0f)) * 255.0f);
     rgb.b = check_rgb(((color.b / 255.0f) * (adjuster.b / 255.0f)) * 255.0f);
 	return (rgb);
-}
-
-double	ft_length_squared(t_vec3 vec)
-{
-	return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
-}
-
-t_vec3		ft_norm(t_vec3 v)
-{
-	return (ft_scale(v, 1 / sqrt(ft_length_squared(v))));
 }
 
 #ifndef M_PI
