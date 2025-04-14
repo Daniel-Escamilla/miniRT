@@ -3,14 +3,59 @@
 /*                                                        :::      ::::::::   */
 /*   ft_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:57:18 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/13 17:38:33 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:51:56 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/main.h"
+
+void	ft_move_camera(int key, t_image *image)
+{
+	static int	sign = 1;
+	t_vec3		*normal = &image->objects->camera->normal;
+	t_vec3		*position = &image->objects->camera->position;
+
+	if (key == '+')
+		sign = 1;
+	else if (key == '-')
+		sign = -1;
+	else if (key == 'x')
+		normal->x += sign * 0.1;
+	else if (key == 'y')
+		normal->y += sign * 0.1;
+	else if (key == 'z')
+		normal->z += sign * 0.1;
+	else if (key == 'X')
+		normal->x -= sign * 0.1;
+	else if (key == 'Y')
+		normal->y -= sign * 0.1;
+	else if (key == 'Z')
+		normal->z -= sign * 0.1;
+	else if (key == 65363) // Left arrow
+		position->x -= sign * 0.5;
+	else if (key == 65361) // Right arrow
+		position->x += sign * 0.5;
+	else if (key == 65362) // Up arrow
+		position->z += sign * 0.5;
+	else if (key == 65364) // Down arrow
+		position->z -= sign * 0.5;
+	else if (key == 'f')
+		image->objects->camera->fov += sign * 5;
+	else if (key == 'F')
+		image->objects->camera->fov -= sign * 5;
+	if (key == 'f' || key == 'F' || key == 'x' || key == 'y' || key == 'z' || 
+		key == 'X' || key == 'Y' || key == 'Z' || key == 65363 || key == 65361 || 
+		key == 65362 || key == 65364)
+	{
+		printf("Camera FOV: %f\n", image->objects->camera->fov);
+		printf("Camera Normal: x=%f, y=%f, z=%f\n", normal->x, normal->y, normal->z);
+		printf("Camera Position: x=%f, y=%f, z=%f\n", position->x, position->y, position->z);
+	}
+	ft_create_render(image->data, image);
+}
 
 int	ft_hooks(int key, t_image *image)
 {
@@ -19,6 +64,7 @@ int	ft_hooks(int key, t_image *image)
 		printf("%d\n", key);
 		ft_end_program(image);
 	}
+	ft_move_camera(key, image);
 	return (0);
 }
 
