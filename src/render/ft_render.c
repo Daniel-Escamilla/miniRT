@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_render.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:33:31 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/13 18:05:20 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/14 12:10:54 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	*ft_render_thread(void *arg)
 
 void	ft_create_render(t_mlx *data, t_image *image)
 {
-    const int		num_threads = 4; // Número de hilos
+    const int		num_threads = 8; // Número de hilos
     pthread_t		threads[num_threads];
     t_thread_data	thread_data[num_threads];
     int				i;
