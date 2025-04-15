@@ -6,11 +6,13 @@
 /*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 15:29:21 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/14 13:03:56 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/04/15 16:03:17 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/render.h"
+
+int	ft_hit_anything(t_image *image, t_ray *ray);
 
 double	ft_length_squared(t_vec3 vec)
 {
@@ -108,14 +110,114 @@ void	ft_hit_plane(t_plane *plane, t_ray *ray, bool *hit)
 	}
 }
 
+static float	cy_calc(t_cylinder *cylinder, t_ray *ray, float *y, bool ret[2], bool *cap_hit, int *cap_side)
+{
+	t_vec3	v[2];
+	t_vec3	v_cy2ray;
+	t_vec2	tt;
+	float	dist[2];
+	float	radius;
+	float	t_cap[2];
+	t_vec3	cap_center[2];
+	t_vec3	hit_point;
+	float	t_result;
+	bool	valid_cap[2] = {false, false};
 
+	*cap_hit = false;
+	*cap_side = -1;
+	radius = cylinder->diameter / 2.0;
+
+	// Cuerpo
+	v[0] = ft_subtract(ray->direction, ft_scale(cylinder->normal, ft_dot(ray->direction, cylinder->normal)));
+	v[1] = ft_subtract(ft_subtract(ray->origin, cylinder->position),
+		ft_scale(cylinder->normal, ft_dot(ft_subtract(ray->origin, cylinder->position), cylinder->normal)));
+	tt = ft_cuadratic(ft_length_squared(v[0]), 2 * ft_dot(v[0], v[1]), ft_length_squared(v[1]) - radius * radius);
+
+	v_cy2ray = ft_subtract(cylinder->position, ray->origin);
+	dist[0] = ft_dot(cylinder->normal, ft_subtract(ft_scale(ray->direction, tt.t0), v_cy2ray));
+	dist[1] = ft_dot(cylinder->normal, ft_subtract(ft_scale(ray->direction, tt.t1), v_cy2ray));
+	ret[0] = (dist[0] >= 0 && dist[0] <= cylinder->height && tt.t0 > 0.0001);
+	ret[1] = (dist[1] >= 0 && dist[1] <= cylinder->height && tt.t1 > 0.0001);
+
+	// Tapas
+	cap_center[0] = cylinder->position;
+	cap_center[1] = ft_add(cylinder->position, ft_scale(cylinder->normal, cylinder->height));
+
+	for (int i = 0; i < 2; i++)
+	{
+		float denom = ft_dot(ray->direction, cylinder->normal);
+		if (fabs(denom) > 1e-6)
+		{
+			t_cap[i] = ft_dot(ft_subtract(cap_center[i], ray->origin), cylinder->normal) / denom;
+			if (t_cap[i] > 0.0001)
+			{
+				hit_point = ft_add(ray->origin, ft_scale(ray->direction, t_cap[i]));
+				if (ft_length_squared(ft_subtract(hit_point, cap_center[i])) <= radius * radius)
+					valid_cap[i] = true;
+			}
+		}
+	}
+
+	// Elegir el tiempo más cercano válido
+	t_result = 1e30;
+	if (ret[0] && tt.t0 < t_result)
+	{
+		*y = dist[0];
+		t_result = tt.t0;
+		*cap_hit = false;
+	}
+	if (ret[1] && tt.t1 < t_result)
+	{
+		*y = dist[1];
+		t_result = tt.t1;
+		*cap_hit = false;
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		if (valid_cap[i] && t_cap[i] < t_result)
+		{
+			*cap_hit = true;
+			*cap_side = i;
+			*y = i == 0 ? 0.0 : cylinder->height;
+			t_result = t_cap[i];
+		}
+	}
+	return (t_result);
+}
+
+void	ft_hit_cylinder(t_cylinder *cylinder, t_ray *ray, bool *hit)
+{
+	bool		ret[2];
+	bool		cap_hit;
+	int			cap_side;
+	float		time;
+	float		y;
+
+	time = cy_calc(cylinder, ray, &y, ret, &cap_hit, &cap_side);
+	if ((ret[0] || ret[1] || cap_hit) && ray->hit->time > time && time > 0.0001)
+	{
+		ray->hit->time = time;
+		ray->hit->point = ft_add(ray->origin, ft_scale(ray->direction, time));
+		if (cap_hit)
+			ray->hit->normal = (cap_side == 0) ? ft_scale(cylinder->normal, -1) : cylinder->normal;
+		else if (!ret[0] && ret[1])
+			ray->hit->normal = ft_scale(ray->hit->normal, -1);
+		else
+			ray->hit->normal = ft_norm(ft_subtract(ray->hit->point,
+				ft_add(cylinder->position, ft_scale(cylinder->normal, y))));
+		ray->hit->color = cylinder->color;
+	}
+	if (ret[0] || ret[1] || cap_hit)
+		*hit = true;
+}
 
 int	ft_hit_anything(t_image *image, t_ray *ray)
 {
-    bool		hit;
+	bool		hit;
     t_sphere	*current_sphere;
 	t_plane		*current_plane;
-	
+	t_cylinder	*current_cylinder;
+
     ray->hit->time = INFINITY;
     hit = false;
     current_sphere = image->objects->sphere;
@@ -129,6 +231,12 @@ int	ft_hit_anything(t_image *image, t_ray *ray)
 	{
 		ft_hit_plane(current_plane, ray, &hit);
 		current_plane = current_plane->next;
+	}
+	current_cylinder = image->objects->cylinder;
+	while (current_cylinder)
+	{
+		ft_hit_cylinder(current_cylinder, ray, &hit);
+		current_cylinder = current_cylinder->next;
 	}
     return (hit);
 }
@@ -245,7 +353,7 @@ t_vec3	ft_per_pixel(t_image *image, t_vec2 coord)
 	color = (t_vec3){{0.0f, 0.0f, 0.0f}};
 	ray = ft_init_ray(image, coord);
 	current = image;
-	if (ft_hit_anything(current, ray) == false)
+	if (ft_hit_anything(current, ray) == 0)
 	{
 		free(ray->hit);
 		free(ray);
