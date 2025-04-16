@@ -26,24 +26,34 @@ INCLUDE_SRC =	file.h \
 
 INCLUDES = $(addprefix include/, $(INCLUDE_SRC))
 
-MAIN_SRC =      src/main/ft_main.c \
-				src/main/ft_window.c \
-
 FILE_SRC =		src/file/ft_open_file.c \
 				src/file/ft_file_exist.c \
 				src/file/ft_create_file.c \
+				src/file/ft_extract_lines.c \
+				src/file/ft_extract_values.c \
+				src/file/ft_extract_objects.c \
 
+MAIN_SRC =		src/main/ft_main.c \
+				src/main/ft_window.c \
+				src/main/ft_normalice_values.c \
+
+RENDER_SRC =	src/render/ft_maths.c \
+				src/render/ft_maths2.c \
+				src/render/ft_maths3.c \
+				src/render/ft_render.c \
+				src/render/ft_cuadratic.c \
+				src/render/ft_per_pixel.c \
+				src/render/ft_hit_plane.c \
+				src/render/ft_operations.c \
+				src/render/ft_hit_sphere.c \
+				src/render/ft_light_utils.c \
+				src/render/ft_color_utils.c \
+				src/render/ft_hit_cylinder.c \
 
 UTILS_SRC =		src/utils/ft_atof.c \
 				src/utils/ft_atoi_mod.c \
 				src/utils/ft_free_struct.c \
-				src/utils/ft_print_struct.c \
 				src/utils/ft_strstr_utils.c \
-
-RENDER_SRC =	src/render/ft_maths.c \
-				src/render/ft_render.c \
-				src/render/ft_per_pixel.c \
-				src/render/ft_operations.c \
 
 GNL_SRC =		get_next_line/get_next_line.c \
 				get_next_line/get_next_line_utils.c \
