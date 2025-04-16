@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 18:09:02 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 21:22:45 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:35:53 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 # define STRUCT_H
 
 # include "../minirt.h"
-# include "objects_struct.h"
-# include "math_struct.h"
+
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef struct s_mlx
 {
