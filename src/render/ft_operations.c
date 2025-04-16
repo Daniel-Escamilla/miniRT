@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_operations.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 12:15:02 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/09 19:31:13 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:37:40 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vec3	ft_add(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
-t_vec3	ft_subtract(t_vec3 a, t_vec3 b)
+t_vec3	ft_sub(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;
 
@@ -32,7 +32,7 @@ t_vec3	ft_subtract(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
-t_vec3	ft_multiply(t_vec3 a, t_vec3 b)
+t_vec3	ft_mult(t_vec3 a, t_vec3 b)
 {
 	t_vec3	result;
 
@@ -42,10 +42,10 @@ t_vec3	ft_multiply(t_vec3 a, t_vec3 b)
 	return (result);
 }
 
-static double	safe_divide(double a, double b)
+double	safe_divide(double a, double b)
 {
 	if (b == 0)
-		return 0;
+		return (0);
 	return (a / b);
 }
 
