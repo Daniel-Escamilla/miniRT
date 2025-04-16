@@ -6,4 +6,4 @@ minirt_objects/
 libft_objects/
 libft.a
 Z_To-Do_Z
-a.rt
+*.rt
