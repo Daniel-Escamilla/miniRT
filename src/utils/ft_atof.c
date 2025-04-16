@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atof.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 12:37:03 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 19:01:51 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/16 11:45:04 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	handle_sign(char *str, int *i, int *error)
 double	convert_integer_part(char *str, int *i, int *error)
 {
 	int			start;
-	double	nb;
+	double		nb;
 	int			n;
 
 	nb = 0.0F;
