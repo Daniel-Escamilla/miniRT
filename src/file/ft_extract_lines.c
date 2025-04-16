@@ -6,7 +6,7 @@
 /*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 11:58:40 by daniel-esca       #+#    #+#             */
-/*   Updated: 2025/04/16 12:02:11 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/04/16 13:16:16 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,13 @@ void	ft_extact_light(t_image *image, char ***split, int *error, int line)
 	image->objects->light->brightness = ft_check_float((*split)[2], error,
 			limit, line);
 	image->objects->light->color = ft_split_colors((*split)[3], error, line);
+}
+
+int	ft_nothing(const char *input, int i)
+{
+	while (input[i] && (input[i] == ' ' || input[i] == '\n'))
+		i++;
+	if (input[i] == '\0')
+		return (1);
+	return (0);
 }
