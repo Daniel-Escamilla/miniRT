@@ -6,7 +6,7 @@
 /*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/14 12:15:10 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/04/16 11:32:12 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ typedef union	u_vec2
 		float	t0;
 		float	t1;
 	};
+	struct
+	{
+		double		min;
+		double		max;
+	};
+	
 }				t_vec2;
 
 typedef union	u_vec3
@@ -78,5 +84,23 @@ typedef struct	s_ray
 	t_hit		*hit;
 }				t_ray;
 
+typedef struct	s_cy_data
+{
+	bool		lateral_hit[2];
+	bool		cap_hit;
+	int			cap_side;
+	float		axis_distance;
+	t_vec3		ray_dir_proj;
+	t_vec3		ray_origin_proj;
+	t_vec3		vector_cylinder_to_ray;
+	float		axis_test[2];
+	float		radius;
+	float		time;
+	float		cap_time[2];
+	t_vec3		cap_center[2];
+	t_vec3		hit_point;
+	t_vec2		cuadratic_tt;
+	bool		cap_valid[2];
+}				t_cy_data;
 
 #endif
