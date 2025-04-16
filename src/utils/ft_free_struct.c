@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_struct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 21:29:01 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 21:37:38 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:37:33 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/utils.h"
 
-static void ft_safe_free(void **ptr)
+void	ft_safe_free(void **ptr)
 {
 	if (*ptr)
 	{
