@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_mod.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:34:57 by descamil          #+#    #+#             */
-/*   Updated: 2025/02/14 18:47:20 by descamil         ###   ########.fr       */
+/*   Updated: 2025/04/16 12:46:43 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	handle_sign(char *str, int *i, int *sign)
 	return (1);
 }
 
-static int	calculate_result(char *str, int *i, int *error, int sign)
+int	calculate_result(char *str, int *i, int *error, int sign)
 {
 	long long	result;
 	int			digit;
