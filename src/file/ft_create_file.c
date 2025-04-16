@@ -6,7 +6,7 @@
 /*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:01:10 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/16 12:00:17 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/04/16 13:27:02 by daniel-esca      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,6 @@ void	ft_lstadd_back_general(void **list, void *new)
 	while (*(void **)current != NULL)
 		current = *(void **)current;
 	*(void **)current = new;
-}
-
-int	ft_nothing(const char *input, int i)
-{
-	while (input[i] && (input[i] == ' ' || input[i] == '\n'))
-		i++;
-	if (input[i] == '\0')
-		return (1);
-	return (0);
 }
 
 void	ft_process_line(t_image *image, char *content, int *error, int line)
@@ -73,6 +64,32 @@ int	ft_print_error(int error)
 	return (1);
 }
 
+bool	ft_any_null(t_image *image)
+{
+	bool	any;
+
+	any = false;
+	if (image->objects->camera == NULL)
+	{
+		any = true;
+		printf(B_OR_0"Expected format 'C [x,y,z]"
+			" [vector] FOV'"RESET"\n");
+	}
+	if (image->objects->ambient == NULL)
+	{
+		any = true;
+		printf(B_OR_0"Expected format 'A"
+			" ratio [R,G,B]'"RESET"\n");
+	}
+	if (image ->objects->light == NULL)
+	{
+		any = true;
+		printf(B_OR_0"Expected format 'L [x,y,z]"
+			" ratio [R,G,B]'"RESET"\n");
+	}
+	return (any);
+}
+
 void	ft_create_struct(t_image *image, char **argv)
 {
 	char	*content_clean;
@@ -97,4 +114,6 @@ void	ft_create_struct(t_image *image, char **argv)
 	}
 	if (error != 0)
 		exit(ft_print_error(error));
+	if (ft_any_null(image) == true)
+		exit(1);
 }
