@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 16:00:38 by descamil          #+#    #+#             */
-/*   Updated: 2024/12/19 11:26:44 by descamil         ###   ########.fr       */
+/*   Updated: 2025/05/07 12:00:46 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	calculate_result(const char *str, int *i, int sign)
 				|| (result == (INT_MAX / 10) && digit > 7)))
 			return (INT_MAX);
 		else if (sign == -1 && (result > (INT_MAX / 10)
-			|| (result == (INT_MAX / 10) && digit > 8)))
+				|| (result == (INT_MAX / 10) && digit > 8)))
 			return (INT_MIN);
 		result = result * 10 + digit;
 		(*i)++;
@@ -60,7 +60,8 @@ int	ft_atoi(const char *str)
 	if (handle_sign(str, &i, &sign) && (str[i] == '-' || str[i] == '+'
 			|| !(str[i] >= '0' && str[i] <= '9')))
 		return (0);
-	if ((sign == 0 && ft_strlen(str) > 10) || (sign == 1 && ft_strlen(str) > 11))
+	if ((sign == 0 && ft_strlen(str) > 10)
+		|| (sign == 1 && ft_strlen(str) > 11))
 		return (0);
 	result = calculate_result(str, &i, sign);
 	if (str[i] != '\0')
