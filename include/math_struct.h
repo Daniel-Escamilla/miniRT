@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   math_struct.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
+/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/16 11:32:12 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/05/07 12:07:38 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,34 @@
 #  define M_PI 3.14159265358979323846
 # endif
 
-typedef union	u_vec2
+#ifndef FLT_MAX
+# define FLT_MAX 3.402823466e+38F
+#endif
+
+#ifndef FLT_MIN
+# define FLT_MIN 1.17549435e-38F
+#endif
+
+typedef union u_vec2
 {
 	struct
 	{
-		float	x;
-		float	y;
+		float		x;
+		float		y;
 	};
 	struct
 	{
-		float	t0;
-		float	t1;
+		float		t0;
+		float		t1;
 	};
 	struct
 	{
 		double		min;
 		double		max;
 	};
-	
 }				t_vec2;
 
-typedef union	u_vec3
+typedef union u_vec3
 {
 	struct
 	{
@@ -59,17 +66,16 @@ typedef union	u_vec3
 		float		_b;
 		float		_c;
 	};
-	
 }					t_vec3;
 
-typedef struct	s_cam3
+typedef struct s_cam3
 {
 	t_vec3		w;
 	t_vec3		u;
 	t_vec3		v;
 }				t_cam3;
 
-typedef struct	s_hit
+typedef struct s_hit
 {
 	t_vec3		normal;
 	t_vec3		point;
@@ -77,14 +83,14 @@ typedef struct	s_hit
 	float		time;
 }				t_hit;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_vec3		origin;
 	t_vec3		direction;
 	t_hit		*hit;
 }				t_ray;
 
-typedef struct	s_cy_data
+typedef struct s_cy_data
 {
 	bool		lateral_hit[2];
 	bool		cap_hit;
