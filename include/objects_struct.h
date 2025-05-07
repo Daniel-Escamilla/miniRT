@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   objects_struct.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
+/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 22:51:11 by descamil          #+#    #+#             */
-/*   Updated: 2025/04/16 10:07:50 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/05/07 12:00:25 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_light
 	t_vec3		color;
 }				t_light;
 
-typedef	struct s_sphere
+typedef struct s_sphere
 {
 	struct s_sphere	*next;
 	t_vec3			position;
