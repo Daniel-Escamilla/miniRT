@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/04 12:33:31 by descamil          #+#    #+#             */
-/*   Updated: 2025/06/14 13:04:29 by descamil         ###   ########.fr       */
+/*   Updated: 2025/06/14 13:11:33 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,90 +69,28 @@ void	ft_init_camera(t_image *image)
 	camera->l_left_corner = ft_sub(camera->l_left_corner, coord.w);
 }
 
-// void	ft_create_render(t_mlx *data, t_image *image)
-// {
-// 	t_vec3	color;
-// 	t_vec2	coord;
-// 	int		y;
-// 	int		x;
-
-// 	y = 0;
-// 	ft_init_camera(image);
-// 	while (y < image->height)
-// 	{
-// 		coord.y = (double)y / image->height;
-// 		x = 0;
-// 		while (x < image->width)
-// 		{
-// 			coord.x = (double)x / image->width;
-// 			color = ft_per_pixel(image, coord);
-// 			my_mlx_pixel_put(data, x, image->height - y - 1,
-// 				ft_convert_rgba(color));
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	mlx_put_image_to_window(image->mlx, image->mlx_win, data->img, 0, 0);
-// }
-
-
-#include <pthread.h>
-
-#define THREAD_COUNT 8
-
-typedef struct s_thread_data {
-	t_mlx		*data;
-	t_image		*image;
-	int			start_y;
-	int			end_y;
-}	t_thread_data;
-
-void	*ft_render_slice(void *arg)
+void	ft_create_render(t_mlx *data, t_image *image)
 {
-	t_thread_data	*td = (t_thread_data *)arg;
-	t_vec3			color;
-	t_vec2			coord;
-	int				x, y;
+	t_vec3	color;
+	t_vec2	coord;
+	int		y;
+	int		x;
 
-	y = td->start_y;
-	while (y < td->end_y)
+	y = 0;
+	ft_init_camera(image);
+	while (y < image->height)
 	{
-		coord.y = (double)y / td->image->height;
+		coord.y = (double)y / image->height;
 		x = 0;
-		while (x < td->image->width)
+		while (x < image->width)
 		{
-			coord.x = (double)x / td->image->width;
-			color = ft_per_pixel(td->image, coord);
-			my_mlx_pixel_put(td->data, x, td->image->height - y - 1,
+			coord.x = (double)x / image->width;
+			color = ft_per_pixel(image, coord);
+			my_mlx_pixel_put(data, x, image->height - y - 1,
 				ft_convert_rgba(color));
 			x++;
 		}
 		y++;
 	}
-	return (NULL);
-}
-
-void	ft_create_render(t_mlx *data, t_image *image)
-{
-	pthread_t		threads[THREAD_COUNT];
-	t_thread_data	td[THREAD_COUNT];
-	int				i;
-	int				slice;
-
-	ft_init_camera(image);
-	slice = image->height / THREAD_COUNT;
-	i = 0;
-	while (i < THREAD_COUNT)
-	{
-		td[i].data = data;
-		td[i].image = image;
-		td[i].start_y = i * slice;
-		td[i].end_y = (i == THREAD_COUNT - 1) ? image->height : (i + 1) * slice;
-		pthread_create(&threads[i], NULL, ft_render_slice, &td[i]);
-		i++;
-	}
-	i = 0;
-	while (i < THREAD_COUNT)
-		pthread_join(threads[i++], NULL);
 	mlx_put_image_to_window(image->mlx, image->mlx_win, data->img, 0, 0);
 }
