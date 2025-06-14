@@ -6,7 +6,7 @@
 /*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 23:04:44 by descamil          #+#    #+#             */
-/*   Updated: 2025/05/07 12:07:38 by descamil         ###   ########.fr       */
+/*   Updated: 2025/06/14 10:23:42 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 #  define M_PI 3.14159265358979323846
 # endif
 
-#ifndef FLT_MAX
-# define FLT_MAX 3.402823466e+38F
-#endif
+# ifndef FLT_MAX
+#  define FLT_MAX 3.402823466e+38F
+# endif
 
-#ifndef FLT_MIN
-# define FLT_MIN 1.17549435e-38F
-#endif
+# ifndef FLT_MIN
+#  define FLT_MIN 1.17549435e-38F
+# endif
 
 typedef union u_vec2
 {
