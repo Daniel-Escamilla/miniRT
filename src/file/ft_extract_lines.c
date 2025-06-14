@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_extract_lines.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
+/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 11:58:40 by daniel-esca       #+#    #+#             */
-/*   Updated: 2025/04/16 13:16:16 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/06/14 12:26:35 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void	ft_extact_ambient(t_image *image, char ***split, int *error, int line)
 	}
 	limit.min = 0.0f;
 	limit.max = 1.0f;
+	if (image->objects->ambient != NULL)
+	{
+		printf(B_RD_0 "Line [%d]\tAmbient duplicate" RESET "\n", line);
+		(*error)++;
+		return ;
+	}
 	image->objects->ambient = ft_calloc(sizeof(t_ambient), 1);
 	image->objects->ambient->ambient_light = ft_check_float((*split)[1],
 			error, limit, line);
@@ -44,6 +50,12 @@ void	ft_extact_camera(t_image *image, char ***split, int *error, int line)
 	}
 	limit.min = 0;
 	limit.max = 180;
+	if (image->objects->camera != NULL)
+	{
+		printf(B_RD_0 "Line [%d]\tCamera duplicate" RESET "\n", line);
+		(*error)++;
+		return ;
+	}
 	image->objects->camera = ft_calloc(sizeof(t_camera), 1);
 	image->objects->camera->position = ft_split_coords((*split)[1],
 			error, line);
@@ -65,6 +77,12 @@ void	ft_extact_light(t_image *image, char ***split, int *error, int line)
 	}
 	limit.min = 0.0;
 	limit.max = 1.0;
+	if (image->objects->light != NULL)
+	{
+		printf(B_RD_0 "Line [%d]\tLight duplicate" RESET "\n", line);
+		(*error)++;
+		return ;
+	}
 	image->objects->light = ft_calloc(sizeof(t_light), 1);
 	image->objects->light->position = ft_split_coords((*split)[1],
 			error, line);
