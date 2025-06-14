@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_light_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: daniel-escamilla <daniel-escamilla@stud    +#+  +:+       +#+        */
+/*   By: descamil <descamil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 12:13:02 by daniel-esca       #+#    #+#             */
-/*   Updated: 2025/04/16 12:13:25 by daniel-esca      ###   ########.fr       */
+/*   Updated: 2025/06/14 12:11:49 by descamil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,22 @@ int	ft_shadow(t_image *image, t_hit	*hit)
 	return (touch);
 }
 
+t_vec3	ft_add_color(t_vec3 a, t_vec3 b)
+{
+	t_vec3	result;
+
+	result.r = a.r + b.r;
+	result.g = a.g + b.g;
+	result.b = a.b + b.b;
+	return (result);
+}
+
 t_vec3	ft_light_point(t_light *light, t_hit *hit, t_vec3 color)
 {
 	t_vec3	diffuse_light;
 	t_vec3	result;
 
 	diffuse_light = ft_difuse_light(light, hit);
-	result = ft_add(diffuse_light, color);
-	return (ft_clamp(result));
+	result = ft_add_color(diffuse_light, color);
+	return (result);
 }
